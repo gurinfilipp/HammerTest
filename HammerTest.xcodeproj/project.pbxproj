@@ -14,6 +14,7 @@
 		C74C96002698DDB0008C4920 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C74C95FE2698DDB0008C4920 /* LaunchScreen.storyboard */; };
 		C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */; };
 		C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96092698F2E0008C4920 /* MenuItem.swift */; };
+		C74C960C2698FEDA008C4920 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		C74C96012698DDB0008C4920 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
 		C74C96092698F2E0008C4920 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,11 +75,12 @@
 			children = (
 				C74C95F32698DDAF008C4920 /* AppDelegate.swift */,
 				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
+				C74C96092698F2E0008C4920 /* MenuItem.swift */,
 				C74C95FC2698DDB0008C4920 /* Assets.xcassets */,
 				C74C95FE2698DDB0008C4920 /* LaunchScreen.storyboard */,
 				C74C96012698DDB0008C4920 /* Info.plist */,
 				C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */,
-				C74C96092698F2E0008C4920 /* MenuItem.swift */,
+				C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */,
 			);
 			path = HammerTest;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C74C960C2698FEDA008C4920 /* CollectionTableViewCell.swift in Sources */,
 				C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */,
 				C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */,
 				C74C95F82698DDAF008C4920 /* MenuViewController.swift in Sources */,

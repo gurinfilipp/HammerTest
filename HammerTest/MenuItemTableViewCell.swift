@@ -46,7 +46,7 @@ final class MenuItemTableViewCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-
+        super.layoutSubviews()
         [nameLabel, descriptionLabel, itemImageView, minimumPriceButton].forEach {
             contentView.addSubview($0)
         }
