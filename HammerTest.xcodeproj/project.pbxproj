@@ -15,6 +15,7 @@
 		C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */; };
 		C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96092698F2E0008C4920 /* MenuItem.swift */; };
 		C74C960C2698FEDA008C4920 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */; };
+		C76096D92699154D00BDA264 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096D82699154D00BDA264 /* CollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
 		C74C96092698F2E0008C4920 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
+		C76096D82699154D00BDA264 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				C74C96012698DDB0008C4920 /* Info.plist */,
 				C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */,
 				C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */,
+				C76096D82699154D00BDA264 /* CollectionCell.swift */,
 			);
 			path = HammerTest;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */,
 				C74C95F82698DDAF008C4920 /* MenuViewController.swift in Sources */,
 				C74C95F42698DDAF008C4920 /* AppDelegate.swift in Sources */,
+				C76096D92699154D00BDA264 /* CollectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

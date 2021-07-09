@@ -13,7 +13,7 @@ class MenuViewController: UIViewController {
     private var currentCity: String = "Москва ᐯV⌄"
     private let tableView: UITableView = {
         let tableView = UITableView()
-       // tableView.backgroundColor = .yellow
+        tableView.backgroundColor = .systemGroupedBackground
         tableView.tableFooterView = UIView()
         return tableView
     }()
@@ -101,17 +101,16 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
             let cell = CollectionTableViewCell()
-            cell.configure(with: adsArray[indexPath.row])
+      //      cell.configure(with: adsArray[indexPath.row])
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
             cell.configure(with: menuItems[indexPath.row])
-            
-         //   cell.backgroundColor = .systemRed
             return cell
         default:
             return .init()

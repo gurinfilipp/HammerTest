@@ -15,9 +15,8 @@ class CollectionTableViewCell: UITableViewCell {
         let flowLayout = UICollectionViewFlowLayout()
         
         flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumLineSpacing = 30
         flowLayout.itemSize = CGSize(width: 150, height: 40)
-        flowLayout.minimumLineSpacing = 1
-        flowLayout.minimumInteritemSpacing = 1
         return UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     }()
     
@@ -34,7 +33,8 @@ class CollectionTableViewCell: UITableViewCell {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         contentView.addSubview(collectionView)
-        
+        collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.pin.all()
         self.collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: "CollectionCell")
         
     }
@@ -56,35 +56,22 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
             return .init()
         }
         print("hey")
-        cell.backgroundColor = .black
+
         cell.configure(with: adsArray[indexPath.row])
         
         return cell
         
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width - 110, height: collectionView.bounds.height - 30)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+    
 }
 
-final class CollectionCell: UICollectionViewCell {
-    private let adImageView = UIImageView()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        contentView.backgroundColor = .green
-        contentView.addSubview(adImageView)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        adImageView.pin.all()
-    }
-    
-    func configure(with ad: String) {
-        adImageView.image = UIImage(named: ad)
-    }
-}
+
