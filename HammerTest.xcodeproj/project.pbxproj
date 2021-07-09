@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,8 @@
 		C74C95F82698DDAF008C4920 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C95F72698DDAF008C4920 /* MenuViewController.swift */; };
 		C74C95FD2698DDB0008C4920 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74C95FC2698DDB0008C4920 /* Assets.xcassets */; };
 		C74C96002698DDB0008C4920 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C74C95FE2698DDB0008C4920 /* LaunchScreen.storyboard */; };
+		C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */; };
+		C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96092698F2E0008C4920 /* MenuItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		C74C95FC2698DDB0008C4920 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C74C95FF2698DDB0008C4920 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C74C96012698DDB0008C4920 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemTableViewCell.swift; sourceTree = "<group>"; };
+		C74C96092698F2E0008C4920 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,8 @@
 				C74C95FC2698DDB0008C4920 /* Assets.xcassets */,
 				C74C95FE2698DDB0008C4920 /* LaunchScreen.storyboard */,
 				C74C96012698DDB0008C4920 /* Info.plist */,
+				C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */,
+				C74C96092698F2E0008C4920 /* MenuItem.swift */,
 			);
 			path = HammerTest;
 			sourceTree = "<group>";
@@ -82,7 +88,6 @@
 				05A6FD6ED8E8238774629729 /* Pods-HammerTest.debug.xcconfig */,
 				347F0641F7A9C3164D4ACE7B /* Pods-HammerTest.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -199,6 +204,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */,
+				C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */,
 				C74C95F82698DDAF008C4920 /* MenuViewController.swift in Sources */,
 				C74C95F42698DDAF008C4920 /* AppDelegate.swift in Sources */,
 			);

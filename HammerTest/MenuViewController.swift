@@ -18,6 +18,8 @@ class MenuViewController: UIViewController {
         return tableView
     }()
     
+    private var menuItems: [MenuItem] = [MenuItem(name: "pizzizzizzizzizzizzizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza izza", imageName: "menuIcon", description: "blizzai zzaizz aizz aizzai zzaizzaa bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350)]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
@@ -25,6 +27,8 @@ class MenuViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.register(MenuItemTableViewCell.self, forCellReuseIdentifier: "MenuItemTableViewCell")
+        
         setupNavigationBar()
         setupTableView()
     }
@@ -36,7 +40,7 @@ class MenuViewController: UIViewController {
     }
     
     private func setupTableView() {
-        
+        //tableView.separatorInset = .zero
     }
     
     private func setupNavigationBar() {
@@ -56,7 +60,7 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,15 +68,37 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
-            return 1
-        case 2:
-            return 10
+            return menuItems.count
         default:
             return 0
         }
     }
     
+   
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        switch section {
+        case 0:
+            return .none
+        case 1:
+            let view = UIView()
+            view.backgroundColor = .yellow
+            return view
+        default:
+            return .none
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return 0
+        case 1:
+            return 60
+        default:
+            return 0
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
@@ -81,8 +107,10 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             cell.backgroundColor = .orange
             return cell
         case 1:
-            let cell = UITableViewCell()
-            cell.backgroundColor = .systemIndigo
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
+            cell.configure(with: menuItems[indexPath.row])
+            
+         //   cell.backgroundColor = .systemRed
             return cell
         default:
             return .init()
@@ -94,9 +122,9 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 160
         case 1:
-            return 60
-        default:
             return 200
+        default:
+            return 50
         }
     }
     
