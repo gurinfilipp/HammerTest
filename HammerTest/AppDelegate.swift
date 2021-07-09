@@ -26,12 +26,17 @@ var window: UIWindow?
         let orderNavigationController = UINavigationController(rootViewController: orderViewController)
         
         menuNavigationController.title = "Меню"
-        menuNavigationController.tabBarItem.image = UIImage(systemName: "pencil")
+        menuNavigationController.tabBarItem.image = UIImage(named: "menuIcon")
         contactsNavigationController.title = "Контакты"
+        contactsNavigationController.tabBarItem.image = UIImage(named: "contactsIcon")
         accountNavigationController.title = "Профиль"
+        accountNavigationController.tabBarItem.image = UIImage(named: "accountIcon")
         orderNavigationController.title = "Корзина"
+        orderNavigationController.tabBarItem.image = UIImage(named: "orderIcon")
         
         let mainTabBarController = UITabBarController()
+        mainTabBarController.tabBar.unselectedItemTintColor = .gray
+        mainTabBarController.tabBar.barTintColor = .white
         mainTabBarController.tabBar.tintColor = .red
         mainTabBarController.viewControllers = [menuNavigationController, contactsNavigationController, accountNavigationController, orderNavigationController]
         

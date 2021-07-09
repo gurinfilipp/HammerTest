@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EFA75F4F7EF48D3A086608B /* Pods_HammerTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4632C8FED2B96C25D379B08D /* Pods_HammerTest.framework */; };
 		C74C95F42698DDAF008C4920 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C95F32698DDAF008C4920 /* AppDelegate.swift */; };
 		C74C95F82698DDAF008C4920 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C95F72698DDAF008C4920 /* MenuViewController.swift */; };
 		C74C95FD2698DDB0008C4920 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74C95FC2698DDB0008C4920 /* Assets.xcassets */; };
@@ -14,6 +15,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		05A6FD6ED8E8238774629729 /* Pods-HammerTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HammerTest.debug.xcconfig"; path = "Target Support Files/Pods-HammerTest/Pods-HammerTest.debug.xcconfig"; sourceTree = "<group>"; };
+		347F0641F7A9C3164D4ACE7B /* Pods-HammerTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HammerTest.release.xcconfig"; path = "Target Support Files/Pods-HammerTest/Pods-HammerTest.release.xcconfig"; sourceTree = "<group>"; };
+		4632C8FED2B96C25D379B08D /* Pods_HammerTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HammerTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C74C95F02698DDAF008C4920 /* HammerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HammerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C74C95F32698DDAF008C4920 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C74C95F72698DDAF008C4920 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -27,17 +31,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EFA75F4F7EF48D3A086608B /* Pods_HammerTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B79A906951623F345E109406 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4632C8FED2B96C25D379B08D /* Pods_HammerTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C74C95E72698DDAF008C4920 = {
 			isa = PBXGroup;
 			children = (
 				C74C95F22698DDAF008C4920 /* HammerTest */,
 				C74C95F12698DDAF008C4920 /* Products */,
+				F31548E02A4ECACBE91A1FF1 /* Pods */,
+				B79A906951623F345E109406 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +76,16 @@
 			path = HammerTest;
 			sourceTree = "<group>";
 		};
+		F31548E02A4ECACBE91A1FF1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				05A6FD6ED8E8238774629729 /* Pods-HammerTest.debug.xcconfig */,
+				347F0641F7A9C3164D4ACE7B /* Pods-HammerTest.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -68,9 +93,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C74C96042698DDB0008C4920 /* Build configuration list for PBXNativeTarget "HammerTest" */;
 			buildPhases = (
+				38E0E83B8E200E123E6833F6 /* [CP] Check Pods Manifest.lock */,
 				C74C95EC2698DDAF008C4920 /* Sources */,
 				C74C95ED2698DDAF008C4920 /* Frameworks */,
 				C74C95EE2698DDAF008C4920 /* Resources */,
+				551B9557ED7BF99F61C72D6E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -124,6 +151,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		38E0E83B8E200E123E6833F6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HammerTest-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		551B9557ED7BF99F61C72D6E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HammerTest/Pods-HammerTest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HammerTest/Pods-HammerTest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HammerTest/Pods-HammerTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C74C95EC2698DDAF008C4920 /* Sources */ = {
@@ -267,6 +336,7 @@
 		};
 		C74C96052698DDB0008C4920 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 05A6FD6ED8E8238774629729 /* Pods-HammerTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -286,6 +356,7 @@
 		};
 		C74C96062698DDB0008C4920 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 347F0641F7A9C3164D4ACE7B /* Pods-HammerTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

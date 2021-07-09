@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import PinLayout
 
 class MenuViewController: UIViewController {
 
-    private var currentCity: String = "Москва"
+    private var currentCity: String = "Москва ᐯV⌄"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,7 @@ class MenuViewController: UIViewController {
     private func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: currentCity , style: .plain, target: self, action: #selector(cityButtonTapped))
         navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.barTintColor = .systemGroupedBackground
         navigationController?.navigationBar.shadowImage = UIImage()
     
     }
