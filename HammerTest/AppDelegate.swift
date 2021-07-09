@@ -10,27 +10,39 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        
+        let menuViewController = MenuViewController()
+        let contactsViewController = UIViewController()
+        let accountViewController = UIViewController()
+        let orderViewController = UIViewController()
+        
+        let menuNavigationController = UINavigationController(rootViewController: menuViewController)
+        let contactsNavigationController = UINavigationController(rootViewController: contactsViewController)
+        let accountNavigationController = UINavigationController(rootViewController: accountViewController)
+        let orderNavigationController = UINavigationController(rootViewController: orderViewController)
+        
+        menuNavigationController.title = "Меню"
+        menuNavigationController.tabBarItem.image = UIImage(systemName: "pencil")
+        contactsNavigationController.title = "Контакты"
+        accountNavigationController.title = "Профиль"
+        orderNavigationController.title = "Корзина"
+        
+        let mainTabBarController = UITabBarController()
+        mainTabBarController.tabBar.tintColor = .red
+        mainTabBarController.viewControllers = [menuNavigationController, contactsNavigationController, accountNavigationController, orderNavigationController]
+        
+        
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = mainTabBarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
-
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-
 
 }
 
