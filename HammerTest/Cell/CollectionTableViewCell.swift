@@ -35,7 +35,7 @@ class CollectionTableViewCell: UITableViewCell {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         contentView.addSubview(collectionView)
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.pin.all()
         collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: "CollectionCell")

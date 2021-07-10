@@ -13,7 +13,7 @@ final class MenuItemTableViewCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         
         return label
     }()
@@ -22,6 +22,7 @@ final class MenuItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 14)
         
         return label
     }()

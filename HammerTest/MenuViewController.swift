@@ -18,10 +18,12 @@ class MenuViewController: UIViewController {
         return tableView
     }()
     
-    private var menuItems: [MenuItem] = [MenuItem(name: "pizzizzizzizzizzizzizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza izza", imageName: "menuIcon", description: "blizzai zzaizz aizz aizzai zzaizzaa bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350)]
+    
+    
+    private var menuItems: [MenuItem] = [MenuItem(name: "Ветчина и грибы", imageName: "menuIcon", description: "Ветчина, шампиньоны, увеличенная порция моцареллы", minimumPrice: 345), MenuItem(name: "Баварские колбаски", imageName: "menuIcon", description: "Баварские колбаски, ветчина, пикантная пепперони, острая чоризо, моцарелла, томатный соус", minimumPrice: 345), MenuItem(name: "Нежный лосось", imageName: "menuIcon", description: "Лосось, томаты черри, моцарелла, соус песто", minimumPrice: 345), MenuItem(name: "Пицца четыре сыра", imageName: "menuIcon", description: "Соус карбонара, сыр моцарелла, сыр пармезан, сыр маасдам, сыр рокфор", minimumPrice: 395)]
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
-    private var categories: [String] = ["pizza", "combo", "desserts", "drinks"]
-   // private var categories: [String] = ["pizza"]
+    private var categories: [String] = ["Пицца", "Комбо", "Десерты", "Напитки"]
+   
 
     
     override func viewDidLoad() {
@@ -32,8 +34,6 @@ class MenuViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MenuItemTableViewCell.self, forCellReuseIdentifier: "MenuItemTableViewCell")
-        
-  //      tableView.tableFooterView = CategoriesView(frame: CGRect(x: 0, y: 0, width: 400, height: 70), categories: categories)
         
         setupNavigationBar()
         setupTableView()
@@ -46,11 +46,12 @@ class MenuViewController: UIViewController {
     }
     
     private func setupTableView() {
-        //tableView.separatorInset = .zero
+        
     }
     
     private func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: currentCity , style: .plain, target: self, action: #selector(cityButtonTapped))
+        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.barTintColor = .systemGroupedBackground
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -87,8 +88,10 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return .none
         case 1:
+
             let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
-            return view
+            view.delegate = self
+        return view
         default:
             return .none
         }
@@ -121,18 +124,30 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return .init()
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return 160
+            return 130
         case 1:
             return 200
         default:
             return 50
         }
     }
+
+    
     
 }
 
+extension MenuViewController: FooterViewTapDelegate {
+    func moveTo(section: IndexPath) {
+        
+        self.tableView.scrollToRow(at: section, at: .top, animated: true)
+    }
+    
+ 
+    
+    
+}
 

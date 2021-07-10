@@ -16,7 +16,6 @@ final class CollectionCell: UICollectionViewCell {
         contentView.addSubview(adImageView)
         adImageView.layer.cornerRadius = 10
         adImageView.clipsToBounds = true
-        
     }
     
     required init?(coder: NSCoder) {

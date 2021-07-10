@@ -8,6 +8,11 @@
 import UIKit
 import PinLayout
 
+protocol FooterViewTapDelegate: AnyObject {
+    func moveTo(section: IndexPath)
+}
+
+
 class CategoriesView: UIView {
     
     private var categories: [String] = []
@@ -16,37 +21,27 @@ class CategoriesView: UIView {
         let flowLayout = UICollectionViewFlowLayout()
         
         flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 30
+        flowLayout.minimumLineSpacing = 10
         flowLayout.minimumInteritemSpacing = 40
         flowLayout.itemSize = CGSize(width: 150, height: 40)
         return UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     }()
     
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    //    override init(frame: CGRect) {
-    //        super.init(frame: frame)
-    //
-    //        setupButtons()
-    //    }
+    var onTap: ((Int)->())?
     
+    weak var delegate: MenuViewController?
     
     init(frame: CGRect, categories: [String]) {
         super.init(frame: frame)
         
+            
         self.categories = categories
         addSubview(collectionView)
-        setupButtons()
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.pin.all()
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .green
+        collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionView Cell")
     }
     
@@ -56,58 +51,6 @@ class CategoriesView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupButtons() {
-        let numberOfCategories: Int = categories.count
-        
-        
-        
-        //        for (index, category) in categories.enumerated() {
-        
-//        for category in categories {
-//            let button = createButton(for: category)
-//            arrayOfButtons.append(button)
-//
-//        }
-//        print(arrayOfButtons)
-//
-//        let buttonsStackView = UIStackView(arrangedSubviews: arrayOfButtons)
-//        addSubview(buttonsStackView)
-//        buttonsStackView.pin.all()
-//        buttonsStackView.axis = .horizontal
-//        buttonsStackView.alignment = .center
-//
-//        buttonsStackView.distribution = .equalSpacing
-//
-//        buttonsStackView.spacing = 30
-        
-        
-        
-        //            if index == 0 {
-        //                let button = createButton(for: category)
-        //                addSubview(button)
-        //                button.pin.left(16).height(30).width(80).vCenter()
-        //            }
-        //            let button = createButton(for: category)
-        //            addSubview(button)
-        //            button.pin
-        //                .after(of: button)
-//        //                .marginLeft(16).height(30).width(80).vCenter()
-//        //        }
-//    }
-//
-//    func createButton(for category: String) -> UIButton {
-//        let button = UIButton(type: .system)
-//        button.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
-//        button.layer.cornerRadius = 15
-//        button.layer.borderWidth = 1
-//        button.layer.borderColor = UIColor.red.cgColor
-//
-//        button.setTitle(category, for: .normal)
-//        button.tintColor = .red
-//        return button
-//    }
-    
-}
 }
 
 extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -121,16 +64,23 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
         cell.layer.cornerRadius = 15
         cell.clipsToBounds = true
         cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.red.cgColor
+        cell.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
         cell.configure(with: categories[indexPath.row])
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80, height: 30)
+        return CGSize(width: 100, height: 30)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
+        onTap?(indexPath.row)
+        let newIndexPath = IndexPath(row: 0, section: indexPath.row + 1)
+        delegate?.moveTo(section: newIndexPath)
     }
     
 }

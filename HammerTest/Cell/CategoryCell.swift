@@ -11,9 +11,8 @@ import UIKit
 final class CategoryCell: UICollectionViewCell {
     private let categoryLabel: UILabel = {
        let label = UILabel()
-        label.tintColor = .red
-        label.textColor = .red
-        
+        label.textColor = UIColor.red.withAlphaComponent(0.5)
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     
@@ -22,7 +21,6 @@ final class CategoryCell: UICollectionViewCell {
         contentView.addSubview(categoryLabel)
         categoryLabel.layer.cornerRadius = 10
         categoryLabel.clipsToBounds = true
-        
     }
     
     required init?(coder: NSCoder) {
