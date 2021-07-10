@@ -16,6 +16,8 @@
 		C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C96092698F2E0008C4920 /* MenuItem.swift */; };
 		C74C960C2698FEDA008C4920 /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */; };
 		C76096D92699154D00BDA264 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096D82699154D00BDA264 /* CollectionCell.swift */; };
+		C76096DB2699986500BDA264 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096DA2699986500BDA264 /* CategoriesView.swift */; };
+		C76096E02699A1DC00BDA264 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096DF2699A1DC00BDA264 /* CategoryCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		C74C96092698F2E0008C4920 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		C76096D82699154D00BDA264 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
+		C76096DA2699986500BDA264 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
+		C76096DF2699A1DC00BDA264 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,17 +79,43 @@
 		C74C95F22698DDAF008C4920 /* HammerTest */ = {
 			isa = PBXGroup;
 			children = (
-				C74C95F32698DDAF008C4920 /* AppDelegate.swift */,
-				C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */,
+				C76096DE26999A2B00BDA264 /* Model */,
+				C76096DD26999A0F00BDA264 /* Cell */,
+				C76096DC269999F300BDA264 /* Additional */,
 				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
-				C74C96092698F2E0008C4920 /* MenuItem.swift */,
-				C74C95FC2698DDB0008C4920 /* Assets.xcassets */,
-				C74C95FE2698DDB0008C4920 /* LaunchScreen.storyboard */,
-				C74C96012698DDB0008C4920 /* Info.plist */,
-				C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */,
-				C76096D82699154D00BDA264 /* CollectionCell.swift */,
+				C76096DA2699986500BDA264 /* CategoriesView.swift */,
 			);
 			path = HammerTest;
+			sourceTree = "<group>";
+		};
+		C76096DC269999F300BDA264 /* Additional */ = {
+			isa = PBXGroup;
+			children = (
+				C74C95F32698DDAF008C4920 /* AppDelegate.swift */,
+				C74C95FC2698DDB0008C4920 /* Assets.xcassets */,
+				C74C96012698DDB0008C4920 /* Info.plist */,
+				C74C95FE2698DDB0008C4920 /* LaunchScreen.storyboard */,
+			);
+			path = Additional;
+			sourceTree = "<group>";
+		};
+		C76096DD26999A0F00BDA264 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C74C96072698F0FE008C4920 /* MenuItemTableViewCell.swift */,
+				C74C960B2698FEDA008C4920 /* CollectionTableViewCell.swift */,
+				C76096D82699154D00BDA264 /* CollectionCell.swift */,
+				C76096DF2699A1DC00BDA264 /* CategoryCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C76096DE26999A2B00BDA264 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C74C96092698F2E0008C4920 /* MenuItem.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		F31548E02A4ECACBE91A1FF1 /* Pods */ = {
@@ -211,7 +241,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C74C960C2698FEDA008C4920 /* CollectionTableViewCell.swift in Sources */,
+				C76096DB2699986500BDA264 /* CategoriesView.swift in Sources */,
 				C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */,
+				C76096E02699A1DC00BDA264 /* CategoryCell.swift in Sources */,
 				C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */,
 				C74C95F82698DDAF008C4920 /* MenuViewController.swift in Sources */,
 				C74C95F42698DDAF008C4920 /* AppDelegate.swift in Sources */,
@@ -357,7 +389,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SN4W946MBP;
-				INFOPLIST_FILE = HammerTest/Info.plist;
+				INFOPLIST_FILE = HammerTest/Additional/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -377,7 +409,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SN4W946MBP;
-				INFOPLIST_FILE = HammerTest/Info.plist;
+				INFOPLIST_FILE = HammerTest/Additional/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

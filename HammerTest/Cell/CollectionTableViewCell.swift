@@ -9,7 +9,7 @@ import UIKit
 
 class CollectionTableViewCell: UITableViewCell {
     
-  //  var adsArray: [String] = ["menuIcon", "orderIcon"]
+  
     var adsArray: [UIImage] = []
     
     private let collectionView: UICollectionView = {
@@ -17,12 +17,13 @@ class CollectionTableViewCell: UITableViewCell {
         
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 30
-        flowLayout.itemSize = CGSize(width: 150, height: 40)
+        flowLayout.itemSize = CGSize(width: 100, height: 40)
         return UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +35,7 @@ class CollectionTableViewCell: UITableViewCell {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         contentView.addSubview(collectionView)
-        collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.backgroundColor = .yellow
         collectionView.pin.all()
         collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: "CollectionCell")
@@ -43,7 +44,7 @@ class CollectionTableViewCell: UITableViewCell {
     
     func configure(with ads: [UIImage]) {
         self.adsArray.append(contentsOf: ads)
-        print(adsArray)
+        
     }
     
 }
@@ -62,19 +63,16 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
             debugPrint("cannot create cell")
             return .init()
         }
-        print("hey")
-
         cell.configure(with: adsArray[indexPath.row])
         
         return cell
-        
-        
+
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width - 110, height: collectionView.bounds.height - 30)
+        return CGSize(width: collectionView.bounds.width - 90, height: collectionView.bounds.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

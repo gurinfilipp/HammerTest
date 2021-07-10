@@ -30,5 +30,6 @@ final class CollectionCell: UICollectionViewCell {
     
     func configure(with ad: UIImage) {
         adImageView.image = ad
+        adImageView.contentMode = .scaleAspectFill
     }
 }

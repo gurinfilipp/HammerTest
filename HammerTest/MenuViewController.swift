@@ -14,12 +14,15 @@ class MenuViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemGroupedBackground
-        tableView.tableFooterView = UIView()
+        
         return tableView
     }()
     
     private var menuItems: [MenuItem] = [MenuItem(name: "pizzizzizzizzizzizzizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza izza", imageName: "menuIcon", description: "blizzai zzaizz aizz aizzai zzaizzaa bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350)]
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
+    private var categories: [String] = ["pizza", "combo", "desserts", "drinks"]
+   // private var categories: [String] = ["pizza"]
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +32,8 @@ class MenuViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MenuItemTableViewCell.self, forCellReuseIdentifier: "MenuItemTableViewCell")
+        
+  //      tableView.tableFooterView = CategoriesView(frame: CGRect(x: 0, y: 0, width: 400, height: 70), categories: categories)
         
         setupNavigationBar()
         setupTableView()
@@ -82,8 +87,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return .none
         case 1:
-            let view = UIView()
-            view.backgroundColor = .yellow
+            let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
             return view
         default:
             return .none
@@ -107,6 +111,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             let cell = CollectionTableViewCell()
             cell.configure(with: adsArray)
+            
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
