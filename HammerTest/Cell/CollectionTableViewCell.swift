@@ -39,7 +39,6 @@ class CollectionTableViewCell: UITableViewCell {
         collectionView.pin.all()
         collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: "CollectionCell")
-        
     }
     
     func configure(with ads: [UIImage]) {

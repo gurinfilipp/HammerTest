@@ -9,7 +9,7 @@ import UIKit
 import PinLayout
 
 protocol FooterViewTapDelegate: AnyObject {
-    func moveTo(section: IndexPath)
+    func moveTo(category: String)
 }
 
 
@@ -25,7 +25,7 @@ class CategoriesView: UIView {
         flowLayout.itemSize = CGSize(width: 150, height: 40)
         return UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     }()
-    var currentCategory: Int?
+    var currentCategory: Int = 0
 
     
     
@@ -43,14 +43,6 @@ class CategoriesView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionView Cell")
-        
-//        collectionView.scrollToItem(at: IndexPath(row: currentCategory!, section: 0), at: .centeredHorizontally, animated: false)
-        
-      
-    }
-    
-    func changeCategory(for category: Int) {
-        collectionView.scrollToItem(at: IndexPath(row: category, section: 0), at: .centeredHorizontally, animated: true)
     }
     
     required init?(coder: NSCoder) {
@@ -73,8 +65,10 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
             cell.backgroundColor = UIColor.red.withAlphaComponent(0.3)
             cell.makeTitleBold()
         } else {
+            cell.backgroundColor = UIColor.clear
         cell.layer.borderWidth = 1
         cell.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+            cell.makeTitleStandart()
         }
         return cell
     }
@@ -86,11 +80,13 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
         return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
-        let newIndexPath = IndexPath(row: 0, section: indexPath.row + 1)
-     //   collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        delegate?.moveTo(section: newIndexPath)
+       self.currentCategory = indexPath.row
+        collectionView.reloadData()
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        
+        delegate?.moveTo(category: categories[indexPath.row])
     }
     
 }

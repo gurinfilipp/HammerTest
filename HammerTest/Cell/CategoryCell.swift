@@ -41,4 +41,9 @@ final class CategoryCell: UICollectionViewCell {
         categoryLabel.font = UIFont.boldSystemFont(ofSize: 14)
         categoryLabel.textColor = .red
     }
+    
+    func makeTitleStandart() {
+        categoryLabel.textColor = UIColor.red.withAlphaComponent(0.5)
+        categoryLabel.font = UIFont.systemFont(ofSize: 14)
+    }
 }
