@@ -31,10 +31,10 @@ class CategoriesView: UIView {
     
     weak var delegate: MenuViewController?
     
-    init(frame: CGRect, categories: [String], currentCategory: Int) {
+    init(frame: CGRect, categories: [String]) {
         super.init(frame: frame)
         
-        self.currentCategory = currentCategory
+        
         self.categories = categories
         addSubview(collectionView)
         collectionView.delegate = self
@@ -44,12 +44,14 @@ class CategoriesView: UIView {
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionView Cell")
         
-        let currentCategoryItem = self.collectionView.cellForItem(at: IndexPath(row: currentCategory, section: 0))
-        print("current category is \(currentCategoryItem)")
-      //  self.collectionView.cellForItem(at: IndexPath(row: currentCategory, section: 0))
+//        collectionView.scrollToItem(at: IndexPath(row: currentCategory!, section: 0), at: .centeredHorizontally, animated: false)
+        
+      
     }
     
-    
+    func changeCategory(for category: Int) {
+        collectionView.scrollToItem(at: IndexPath(row: category, section: 0), at: .centeredHorizontally, animated: true)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -87,6 +89,7 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
         let newIndexPath = IndexPath(row: 0, section: indexPath.row + 1)
+      //  collectionView.scrollToItem(at: indexPath, at: .left, animated: true)
         delegate?.moveTo(section: newIndexPath)
     }
     

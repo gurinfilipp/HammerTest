@@ -77,7 +77,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             return menuItems.count
         default:
-            return 0
+        //    return 0
+            return menuItems.count
         }
     }
     
@@ -87,33 +88,21 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         if section == 0 {
             return .none
         }
-        
-        let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories, currentCategory: section - 1)
+        let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
         view.delegate = self
+      //  view.currentCategory = section - 1
+        view.currentCategory = section - 1
+    //    view.changeCategory(for: section - 1)
   print("current category must be \(section - 1)")
         return view
-//        switch section {
-//        case 0:
-//            return .none
-//        case 1:
-//
-//            let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
-//            view.delegate = self
-//            view.currentCategory(category: section - 1)
-//        return view
-//        default:
-//            return .none
-//        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0:
             return 0
-        case 1:
-            return 60
         default:
-            return 0
+            return 60
         }
     }
     
@@ -130,7 +119,10 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             cell.configure(with: menuItems[indexPath.row])
             return cell
         default:
-            return .init()
+            //return .init()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
+            cell.configure(with: menuItems[indexPath.row])
+            return cell
         }
     }
 
@@ -141,7 +133,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             return 200
         default:
-            return 50
+         //   return 50
+        return 200
         }
     }
 
