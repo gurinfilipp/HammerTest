@@ -16,7 +16,6 @@ protocol FooterViewTapDelegate: AnyObject {
 class CategoriesView: UIView {
     
     private var categories: [String] = []
-    private var arrayOfButtons: [UIButton] = []
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         
@@ -26,15 +25,16 @@ class CategoriesView: UIView {
         flowLayout.itemSize = CGSize(width: 150, height: 40)
         return UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     }()
+    var currentCategory: Int?
+
     
-    var onTap: ((Int)->())?
     
     weak var delegate: MenuViewController?
     
-    init(frame: CGRect, categories: [String]) {
+    init(frame: CGRect, categories: [String], currentCategory: Int) {
         super.init(frame: frame)
         
-            
+        self.currentCategory = currentCategory
         self.categories = categories
         addSubview(collectionView)
         collectionView.delegate = self
@@ -43,6 +43,10 @@ class CategoriesView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionView Cell")
+        
+        let currentCategoryItem = self.collectionView.cellForItem(at: IndexPath(row: currentCategory, section: 0))
+        print("current category is \(currentCategoryItem)")
+      //  self.collectionView.cellForItem(at: IndexPath(row: currentCategory, section: 0))
     }
     
     
@@ -60,12 +64,16 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionView Cell", for: indexPath) as? CategoryCell else { return .init() }
-        
         cell.layer.cornerRadius = 15
         cell.clipsToBounds = true
+        cell.configure(with: categories[indexPath.row])
+        if indexPath.row == currentCategory {
+            cell.backgroundColor = UIColor.red.withAlphaComponent(0.3)
+            cell.makeTitleBold()
+        } else {
         cell.layer.borderWidth = 1
         cell.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
-        cell.configure(with: categories[indexPath.row])
+        }
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -78,7 +86,6 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
-        onTap?(indexPath.row)
         let newIndexPath = IndexPath(row: 0, section: indexPath.row + 1)
         delegate?.moveTo(section: newIndexPath)
     }

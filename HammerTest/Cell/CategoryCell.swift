@@ -36,4 +36,9 @@ final class CategoryCell: UICollectionViewCell {
     func configure(with category: String) {
         categoryLabel.text = category
     }
+    
+    func makeTitleBold() {
+        categoryLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        categoryLabel.textColor = .red
+    }
 }

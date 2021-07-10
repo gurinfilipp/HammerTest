@@ -67,7 +67,7 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return categories.count + 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -84,17 +84,26 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch section {
-        case 0:
-            return .none
-        case 1:
-
-            let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
-            view.delegate = self
-        return view
-        default:
+        if section == 0 {
             return .none
         }
+        
+        let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories, currentCategory: section - 1)
+        view.delegate = self
+  print("current category must be \(section - 1)")
+        return view
+//        switch section {
+//        case 0:
+//            return .none
+//        case 1:
+//
+//            let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
+//            view.delegate = self
+//            view.currentCategory(category: section - 1)
+//        return view
+//        default:
+//            return .none
+//        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
