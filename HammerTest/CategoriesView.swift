@@ -89,7 +89,7 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
         let newIndexPath = IndexPath(row: 0, section: indexPath.row + 1)
-      //  collectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+     //   collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         delegate?.moveTo(section: newIndexPath)
     }
     

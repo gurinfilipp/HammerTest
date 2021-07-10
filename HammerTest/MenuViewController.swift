@@ -92,7 +92,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         view.delegate = self
       //  view.currentCategory = section - 1
         view.currentCategory = section - 1
-    //    view.changeCategory(for: section - 1)
+        view.changeCategory(for: section - 1)
   print("current category must be \(section - 1)")
         return view
     }
