@@ -9,7 +9,8 @@ import UIKit
 
 class CollectionTableViewCell: UITableViewCell {
     
-    var adsArray: [String] = ["menuIcon", "orderIcon"]
+  //  var adsArray: [String] = ["menuIcon", "orderIcon"]
+    var adsArray: [UIImage] = []
     
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -35,20 +36,26 @@ class CollectionTableViewCell: UITableViewCell {
         contentView.addSubview(collectionView)
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.pin.all()
+        collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: "CollectionCell")
         
     }
     
-    func configure(with ad: UIImage) {
-        
+    func configure(with ads: [UIImage]) {
+        self.adsArray.append(contentsOf: ads)
+        print(adsArray)
     }
     
 }
 
 extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return adsArray.count
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionCell", for: indexPath) as? CollectionCell  else {
@@ -63,6 +70,8 @@ extension CollectionTableViewCell: UICollectionViewDelegate, UICollectionViewDat
         
         
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width - 110, height: collectionView.bounds.height - 30)

@@ -14,6 +14,9 @@ final class CollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(adImageView)
+        adImageView.layer.cornerRadius = 10
+        adImageView.clipsToBounds = true
+        
     }
     
     required init?(coder: NSCoder) {
@@ -25,7 +28,7 @@ final class CollectionCell: UICollectionViewCell {
         adImageView.pin.all()
     }
     
-    func configure(with ad: String) {
-        adImageView.image = UIImage(named: ad)
+    func configure(with ad: UIImage) {
+        adImageView.image = ad
     }
 }

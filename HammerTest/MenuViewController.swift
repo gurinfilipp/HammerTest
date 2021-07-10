@@ -19,7 +19,7 @@ class MenuViewController: UIViewController {
     }()
     
     private var menuItems: [MenuItem] = [MenuItem(name: "pizzizzizzizzizzizzizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza izza", imageName: "menuIcon", description: "blizzai zzaizz aizz aizzai zzaizzaa bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350), MenuItem(name: "pizza", imageName: "menuIcon", description: "bla bla bla", minimumPrice: 350)]
-    private var adsArray: [UIImage] = [UIImage(systemName: "pencil")!, UIImage(systemName: "pencil")!, UIImage(systemName: "pencil")!, UIImage(systemName: "pencil")!]
+    private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +106,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.section {
         case 0:
             let cell = CollectionTableViewCell()
-      //      cell.configure(with: adsArray[indexPath.row])
+            cell.configure(with: adsArray)
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
