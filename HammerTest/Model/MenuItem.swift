@@ -9,8 +9,8 @@ import Foundation
 
 enum MealType: String, CaseIterable, Decodable {
     case pizza = "Пицца"
-    case combo = "Комбо"
-    case desert = "Десерт"
+    case combo = "Паста"
+    case desert = "Десерты"
     case drinks = "Напитки"
 }
 
