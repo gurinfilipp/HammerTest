@@ -10,7 +10,7 @@ import PinLayout
 
 class MenuViewController: UIViewController {
     
-    private var currentCity: String = "Москва ᐯV⌄"
+    private var currentCity: String = "Москва ᐯ"
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemGroupedBackground
@@ -22,13 +22,10 @@ class MenuViewController: UIViewController {
     private var menuItems: [MenuItem] = [] {
         didSet {
             tableView.reloadData()
+            print("number of items in menu items is \(menuItems.count)")
         }
     }
-    //{
-//        didSet {
-//            sortedMenuArray = sortMenuArray()
-//        }
-  //  }
+
     var sortedMenuArray: [MenuItem] = [] {
         didSet {
             tableView.reloadData()
@@ -64,9 +61,9 @@ class MenuViewController: UIViewController {
     }
     
     func fetchAllMenuItems() {
-        let group = DispatchGroup()
-        group.enter()
-        
+     
+        let serialQueue = DispatchQueue(label: "SerialQueue")
+        serialQueue.sync {
         NetworkManager.fetchMenu(for: "pizza") { pizzaResults in
             let dataToShow = pizzaResults.results
             dataToShow.forEach {  
@@ -79,10 +76,12 @@ class MenuViewController: UIViewController {
                 self.tableView.reloadData()
             }
         }
-        group.leave()
-        group.wait()
-        tableView.reloadData()
-        group.enter()
+    
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+            
+        
         NetworkManager.fetchMenu(for: "pasta") { pastaResults in
             let dataToShow = pastaResults.results
             print("pasta is ocming")
@@ -95,10 +94,11 @@ class MenuViewController: UIViewController {
                 self.tableView.reloadData()
             }
         }
-        group.leave()
-        group.wait()
-        tableView.reloadData()
-        group.enter()
+    
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+        
         
         NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
             let dataToShow = pizzaResults.results
@@ -107,44 +107,63 @@ class MenuViewController: UIViewController {
                 $0.mealType = .desert
             }
             self.menuItems.append(contentsOf: dataToShow)
-            print("MY ITEMS SARE \(self.menuItems)")
+            print("MY  Desrtt ITEMS SARE \(self.menuItems)")
             DispatchQueue.main.async {
                 
               //  self.sortedMenuArray = self.sortMenuArray()
                 self.tableView.reloadData()
             }
         }
-        group.leave()
-        group.wait()
-        tableView.reloadData()
-        
-      
+ 
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+            
+            NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
+                let dataToShow = pizzaResults.results
+                print("drinks are coming")
+                dataToShow.forEach {
+                    $0.mealType = .drinks
+                }
+                self.menuItems.append(contentsOf: dataToShow)
+                print("MY  drinks ITEMS SARE \(self.menuItems)")
+                DispatchQueue.main.async {
+                    
+                  //  self.sortedMenuArray = self.sortMenuArray()
+                    self.tableView.reloadData()
+                }
+            }
+            }
+        let wonder = sortMenuArray()
+        }
      
-    }
+        
+     
+    
     
     
     
     func sortMenuArray() -> [MenuItem] {
-        let sortedAlphArray = menuItems.sorted { $0.title < $1.title }
+  //      let sortedAlphArray = menuItems.sorted { $0.title < $1.title }
         var sortedMenuArray: [MenuItem] = []
 
-        for item in sortedAlphArray {
+        for item in menuItems {
             if item.mealType == .pizza  {
                 print("item title is \(item.title)")
                 sortedMenuArray.append(item)
             }
         }
-        for item in sortedAlphArray {
+        for item in menuItems {
             if item.mealType == .combo {
                 sortedMenuArray.append(item)
             }
         }
-        for item in sortedAlphArray {
+        for item in menuItems {
             if item.mealType == .desert {
                 sortedMenuArray.append(item)
             }
         }
-        for item in sortedAlphArray {
+        for item in menuItems {
             if item.mealType == .drinks {
                 sortedMenuArray.append(item)
             }
@@ -268,7 +287,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 130
         case 1:
-            return 200
+            return 240
         default:
          //   return 50
         return 200
