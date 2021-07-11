@@ -21,15 +21,25 @@ class MenuViewController: UIViewController {
     
     private var menuItems: [MenuItem] = [] {
         didSet {
-            sortedMenuArray = sortMenuArray()
+            tableView.reloadData()
         }
     }
-    var sortedMenuArray: [MenuItem] = []
+    //{
+//        didSet {
+//            sortedMenuArray = sortMenuArray()
+//        }
+  //  }
+    var sortedMenuArray: [MenuItem] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
 
     let categories: [String] = MealType.allCases.map { $0.rawValue }
     var categoryPoints: [Int] = []
     var currentCategory: MealType = .pizza
+    var finalArray: [MenuItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,9 +60,12 @@ class MenuViewController: UIViewController {
       //  print(newArray)
       //  menuItems = sortMenuArray()
         tableView.reloadData()
+    //    sortedMenuArray = sortMenuArray()
     }
     
     func fetchAllMenuItems() {
+        let group = DispatchGroup()
+        group.enter()
         
         NetworkManager.fetchMenu(for: "pizza") { pizzaResults in
             let dataToShow = pizzaResults.results
@@ -61,16 +74,51 @@ class MenuViewController: UIViewController {
             }
             self.menuItems = dataToShow
             DispatchQueue.main.async {
-                print(self.menuItems)
+                print("MY PIZZA ITEMS SARE \(self.menuItems)")
+                self.sortedMenuArray = self.sortMenuArray()
                 self.tableView.reloadData()
             }
+        }
+        group.leave()
+        group.wait()
+        tableView.reloadData()
+        group.enter()
+        NetworkManager.fetchMenu(for: "pasta") { pastaResults in
+            let dataToShow = pastaResults.results
+            print("pasta is ocming")
+            dataToShow.forEach {
+                $0.mealType = .combo
+            }
+            self.menuItems.append(contentsOf: dataToShow)
+            print("MY PASTA ITEMS SARE \(self.menuItems)")
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        group.leave()
+        group.wait()
+        tableView.reloadData()
+        group.enter()
         
+        NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
+            let dataToShow = pizzaResults.results
+            print("desertiscoming")
+            dataToShow.forEach {
+                $0.mealType = .desert
+            }
+            self.menuItems.append(contentsOf: dataToShow)
+            print("MY ITEMS SARE \(self.menuItems)")
+            DispatchQueue.main.async {
+                
+              //  self.sortedMenuArray = self.sortMenuArray()
+                self.tableView.reloadData()
+            }
         }
-     
-     
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        group.leave()
+        group.wait()
+        tableView.reloadData()
+        
+      
      
     }
     
@@ -159,8 +207,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
-            return sortedMenuArray.count
-   //         return menuItems.count
+         //   return sortedMenuArray.count
+        return menuItems.count
         default:
      return 0
         }
@@ -205,8 +253,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
-           // cell.configure(with: menuItems[indexPath.row])
-            cell.configure(with: sortedMenuArray[indexPath.row])
+            cell.configure(with: menuItems[indexPath.row])
+         //   cell.configure(with: sortedMenuArray[indexPath.row])
             
             
             return cell
