@@ -7,18 +7,27 @@
 
 import Foundation
 
-enum MealType: String, CaseIterable {
+enum MealType: String, CaseIterable, Decodable {
     case pizza = "Пицца"
     case combo = "Комбо"
     case desert = "Десерт"
     case drinks = "Напитки"
 }
 
-struct MenuItem {
-    var name: String
-    var imageName: String
-    var description: String
-    var minimumPrice: Int
+class MenuItem: Decodable {
+    var title: String
+    var image: String
+//    var description: String
+ //   var minimumPrice: Int
     
-    var mealType: MealType
+    var mealType: MealType?
+}
+
+
+struct Results: Decodable {
+  //  var results: [MenuItem]
+    var results: [MenuItem]
+   // var offset: Int
+   // var number: Int
+   // var totalResults: Int
 }

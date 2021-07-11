@@ -19,6 +19,7 @@
 		C76096DB2699986500BDA264 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096DA2699986500BDA264 /* CategoriesView.swift */; };
 		C76096E02699A1DC00BDA264 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096DF2699A1DC00BDA264 /* CategoryCell.swift */; };
 		C76096E22699E3BB00BDA264 /* CityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096E12699E3BB00BDA264 /* CityViewController.swift */; };
+		C76096E4269ADDA500BDA264 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76096E3269ADDA500BDA264 /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		C76096DA2699986500BDA264 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		C76096DF2699A1DC00BDA264 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		C76096E12699E3BB00BDA264 /* CityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityViewController.swift; sourceTree = "<group>"; };
+		C76096E3269ADDA500BDA264 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
 				C76096DA2699986500BDA264 /* CategoriesView.swift */,
 				C76096E12699E3BB00BDA264 /* CityViewController.swift */,
+				C76096E3269ADDA500BDA264 /* NetworkManager.swift */,
 			);
 			path = HammerTest;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 			files = (
 				C74C960C2698FEDA008C4920 /* CollectionTableViewCell.swift in Sources */,
 				C76096DB2699986500BDA264 /* CategoriesView.swift in Sources */,
+				C76096E4269ADDA500BDA264 /* NetworkManager.swift in Sources */,
 				C74C96082698F0FE008C4920 /* MenuItemTableViewCell.swift in Sources */,
 				C76096E02699A1DC00BDA264 /* CategoryCell.swift in Sources */,
 				C74C960A2698F2E0008C4920 /* MenuItem.swift in Sources */,

@@ -17,7 +17,13 @@ final class MenuItemTableViewCell: UITableViewCell {
         
         return label
     }()
-    private let itemImageView: UIImageView = UIImageView()
+    private let itemImageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.contentMode = .scaleToFill
+        imageView.layer.cornerRadius = 15
+        imageView.clipsToBounds = true
+        return imageView
+    }()
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -83,13 +89,14 @@ final class MenuItemTableViewCell: UITableViewCell {
     }
     
     func configure(with item: MenuItem) {
-        nameLabel.text = item.name
-        descriptionLabel.text = item.description
+        nameLabel.text = item.title
+        descriptionLabel.text = item.title
+        guard let imageURL = URL(string: item.image) else { return }
+        guard let imageData = try? Data(contentsOf: imageURL) else { return }
         
-        itemImageView.image = UIImage(named: item.imageName)?.withRenderingMode(.alwaysOriginal)
+        itemImageView.image = UIImage(data: imageData)
         
-        minimumPriceButton.setTitle("от \(item.minimumPrice) р", for: .normal)
-        
+        minimumPriceButton.setTitle(item.title, for: .normal)
     }
     
 }

@@ -6,6 +6,7 @@ target 'HammerTest' do
   use_frameworks!
 
 pod 'PinLayout'
+pod 'Alamofire', '~> 5.4'
 
   # Pods for HammerTest
 

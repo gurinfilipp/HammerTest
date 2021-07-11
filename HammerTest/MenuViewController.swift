@@ -19,16 +19,22 @@ class MenuViewController: UIViewController {
     }()
     
     
-    
-    private var menuItems: [MenuItem] = [ MenuItem(name: "Coca-Cola", imageName: "menuIcon", description: "Cola", minimumPrice: 80, mealType: .drinks), MenuItem(name: "Fanta", imageName: "menuIcon", description: "Fanta", minimumPrice: 80, mealType: .drinks), MenuItem(name: "Sprite", imageName: "menuIcon", description: "Sprite", minimumPrice: 80, mealType: .drinks), MenuItem(name: "Ветчина и грибы", imageName: "HandM", description: "Ветчина, шампиньоны, увеличенная порция моцареллы", minimumPrice: 345, mealType: .pizza), MenuItem(name: "Баварские колбаски", imageName: "BS", description: "Баварские колбаски, ветчина, пикантная пепперони, острая чоризо, моцарелла, томатный соус", minimumPrice: 345, mealType: .pizza), MenuItem(name: "Нежный лосось", imageName: "TS", description: "Лосось, томаты черри, моцарелла, соус песто", minimumPrice: 345, mealType: .pizza), MenuItem(name: "Пицца четыре сыра", imageName: "TS", description: "Соус карбонара, сыр моцарелла, сыр пармезан, сыр маасдам, сыр рокфор", minimumPrice: 395, mealType: .pizza), MenuItem(name: "2x2", imageName: "accountIcon", description: "combo for 2 people", minimumPrice: 999, mealType: .combo), MenuItem(name: "Тирамису", imageName: "orderIcon", description: "Классический кофейный десерт", minimumPrice: 240, mealType: .desert), MenuItem(name: "Чизкейк", imageName: "orderIcon", description: "Чизкейк прямиком из Нью-Йорка!", minimumPrice: 300, mealType: .desert), MenuItem(name: "Coca-Cola", imageName: "menuIcon", description: "Cola", minimumPrice: 80, mealType: .drinks), MenuItem(name: "Fanta", imageName: "menuIcon", description: "Fanta", minimumPrice: 80, mealType: .drinks), MenuItem(name: "Sprite", imageName: "menuIcon", description: "Sprite", minimumPrice: 80, mealType: .drinks)]
+    private var menuItems: [MenuItem] = [] {
+        didSet {
+            sortedMenuArray = sortMenuArray()
+        }
+    }
+    var sortedMenuArray: [MenuItem] = []
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
-//    private var categories: [String] = ["Пицца", "Комбо", "Десерты", "Напитки"]
+
     let categories: [String] = MealType.allCases.map { $0.rawValue }
     var categoryPoints: [Int] = []
     var currentCategory: MealType = .pizza
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchAllMenuItems()
+        tableView.reloadData()
         view.addSubview(tableView)
         view.backgroundColor = .white
         
@@ -38,15 +44,45 @@ class MenuViewController: UIViewController {
         
         setupNavigationBar()
         setupTableView()
-        menuItems = sortMenuArray()
+        
         categoryPoints = findNewCategoryPoint()
+     //   let newArray = sortMenuArray()
+      //  print(newArray)
+      //  menuItems = sortMenuArray()
+        tableView.reloadData()
     }
     
+    func fetchAllMenuItems() {
+        
+        NetworkManager.fetchMenu(for: "pizza") { pizzaResults in
+            let dataToShow = pizzaResults.results
+            dataToShow.forEach {  
+                $0.mealType = .pizza
+            }
+            self.menuItems = dataToShow
+            DispatchQueue.main.async {
+                print(self.menuItems)
+                self.tableView.reloadData()
+            }
+        
+        }
+     
+     
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+     
+    }
+    
+    
+    
     func sortMenuArray() -> [MenuItem] {
-        let sortedAlphArray = menuItems.sorted { $0.name < $1.name }
+        let sortedAlphArray = menuItems.sorted { $0.title < $1.title }
         var sortedMenuArray: [MenuItem] = []
+
         for item in sortedAlphArray {
-            if item.mealType == .pizza {
+            if item.mealType == .pizza  {
+                print("item title is \(item.title)")
                 sortedMenuArray.append(item)
             }
         }
@@ -123,22 +159,23 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
-            return menuItems.count
+            return sortedMenuArray.count
+   //         return menuItems.count
         default:
      return 0
         }
     }
     
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == categoryPoints[1] + 1 {
-            self.currentCategory = .combo
-        } else if indexPath.row == categoryPoints[2] + 1 {
-            self.currentCategory = .desert
-        } else if indexPath.row == categoryPoints[3] + 1 {
-            self.currentCategory = .drinks
-        }
-        print(currentCategory)
-    }
+//    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.row == categoryPoints[1] + 1 {
+//            self.currentCategory = .combo
+//        } else if indexPath.row == categoryPoints[2] + 1 {
+//            self.currentCategory = .desert
+//        } else if indexPath.row == categoryPoints[3] + 1 {
+//            self.currentCategory = .drinks
+//        }
+//        print(currentCategory)
+//    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
@@ -168,8 +205,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
-            cell.configure(with: menuItems[indexPath.row])
-            
+           // cell.configure(with: menuItems[indexPath.row])
+            cell.configure(with: sortedMenuArray[indexPath.row])
             
             
             return cell
@@ -196,7 +233,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
-        guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType.rawValue == category }) else { return }
+        guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
         self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
     
