@@ -133,7 +133,9 @@ class MenuViewController: UIViewController {
                     self.tableView.reloadData()
                 }
             }
+            print("well, full menu items are \(menuItems)")
             }
+       
         let wonder = sortMenuArray()
         }
      
