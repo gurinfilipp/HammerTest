@@ -45,6 +45,13 @@ class CategoriesView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func categoryChanged(with category: Int) {
+        self.currentCategory = category
+        collectionView.reloadData()
+        collectionView.scrollToItem(at: IndexPath(row: category, section: 0), at: .centeredHorizontally, animated: true)
+    }
+    
 }
 
 extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -76,12 +83,11 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
         return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.currentCategory = indexPath.row
         collectionView.reloadData()
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         delegate?.moveTo(category: categories[indexPath.row])
     }
-    
 }
+

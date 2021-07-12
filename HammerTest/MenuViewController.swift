@@ -118,7 +118,7 @@ class MenuViewController: UIViewController {
                 }
                 self.menuItems.append(contentsOf: dataToShow)
                 print("8) Drinks added in the array")
-                sleep(5)
+                sleep(1)
                 print("DONT FORGET ABOUT SLEEP")
                 group.leave()
             }
@@ -158,17 +158,32 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return 0
         }
     }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        var categoriesPoints: [Int] = []
+        for category in categories {
+            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            categoriesPoints.append(firstCategoryItem)
+        }
+        let subviewsArray = tableView.subviews
+        let categoryView = subviewsArray.first {
+            $0.tag == 1001
+        }
+        guard let castedCategoryView = categoryView as? CategoriesView else { return }
+        if categoriesPoints.contains(indexPath.row - 2) {
+            let newCategoryNumber = indexPath.row - 2
+            guard let newCategoryNumberInArray = categoriesPoints.firstIndex(of: newCategoryNumber) else {return}
+            let newCategory = self.categories[newCategoryNumberInArray]
+            let newCategoryEnum = MealType.allCases.first {
+                $0.rawValue == newCategory
+            }
+            let newCategoryIndex = MealType.allCases.firstIndex {
+                newCategoryEnum == $0
+            }
+            castedCategoryView.categoryChanged(with: newCategoryIndex ?? 0)
+            }
+        }
     
-    //    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    //        if indexPath.row == categoryPoints[1] + 1 {
-    //            self.currentCategory = .combo
-    //        } else if indexPath.row == categoryPoints[2] + 1 {
-    //            self.currentCategory = .desert
-    //        } else if indexPath.row == categoryPoints[3] + 1 {
-    //            self.currentCategory = .drinks
-    //        }
-    //        print(currentCategory)
-    //    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
@@ -176,6 +191,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         }
         let view = CategoriesView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 70), categories: categories)
         view.delegate = self
+        view.tag = 1001
         return view
     }
     
