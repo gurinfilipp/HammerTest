@@ -29,11 +29,11 @@ class MenuViewController: UIViewController {
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
     
     let categories: [String] = MealType.allCases.map { $0.rawValue }
-
+    var allCategoriesShown = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAllMenuItems()
+        
         
         view.addSubview(tableView)
         view.backgroundColor = .white
@@ -41,7 +41,7 @@ class MenuViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MenuItemTableViewCell.self, forCellReuseIdentifier: "MenuItemTableViewCell")
-        
+        fetchAllMenuItems()
         setupNavigationBar()
     }
     
@@ -62,14 +62,14 @@ class MenuViewController: UIViewController {
     
     
     func fetchAllMenuItems() {
+        let globalSerialQueue = DispatchQueue(label: "GlobalSerialQueue")
         let serialQueue = DispatchQueue(label: "SerialQueue")
-        
-        serialQueue.async {
+        globalSerialQueue.async {
             
             let group = DispatchGroup()
             group.enter()
             
-            NetworkManager.fetchMenu(for: "pizza") { response in
+            NetworkManager.fetchMenu(for: "pizza", on: serialQueue) { response in
                 let dataToShow = response.results
                 print("1) Pizza data to show gets result")
                 dataToShow.forEach {
@@ -90,7 +90,7 @@ class MenuViewController: UIViewController {
             
             
             group.enter()
-            NetworkManager.fetchMenu(for: "pasta") { pastaResults in
+            NetworkManager.fetchMenu(for: "pasta", on: serialQueue) { pastaResults in
                 
                 let dataToShow = pastaResults.results
                 print("3) Pasta data to show gets result")
@@ -106,7 +106,7 @@ class MenuViewController: UIViewController {
             group.wait()
             
             group.enter()
-            NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
+            NetworkManager.fetchMenu(for: "dessert", on: serialQueue) { pizzaResults in
                 let dataToShow = pizzaResults.results
                 print("5) Desserts data to show gets result")
                 dataToShow.forEach {
@@ -120,7 +120,7 @@ class MenuViewController: UIViewController {
             
             
             group.enter()
-            NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
+            NetworkManager.fetchMenu(for: "drinks", on: serialQueue) { pizzaResults in
                 let dataToShow = pizzaResults.results
                 print("7) Drinks data to show gets result")
                 dataToShow.forEach {
@@ -128,7 +128,8 @@ class MenuViewController: UIViewController {
                 }
                 self.menuItems.append(contentsOf: dataToShow)
                 print("8) Drinks added in the array")
-                sleep(5)
+                    sleep(5)
+                print("DONT FORGET ABOUT SLEEP")
                 group.leave()
                 
             }
@@ -136,6 +137,7 @@ class MenuViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.allCategoriesShown = true
                 print("table view reloaded 2 time")
             }
             
@@ -214,8 +216,8 @@ class MenuViewController: UIViewController {
     //            }
     
     
-
-
+    
+    
     @objc
     private func cityButtonTapped() {
         let vc = UINavigationController(rootViewController: CityViewController())
@@ -305,6 +307,17 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
         guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+//        guard let cell = IndexPath(row: firstCategoryItem, section: 1) else {
+//            print("not ready")
+//            return
+//
+//        }
+//        guard self.menuItems.count >= (firstCategoryItem) else {
+//            debugPrint("NOT READY")
+//            return
+//        }
+      //  guard let cell = tableView.cellForRow(at: IndexPath(row: firstCategoryItem, section: 1)) else { return }
+        guard self.allCategoriesShown else { return }
         self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
