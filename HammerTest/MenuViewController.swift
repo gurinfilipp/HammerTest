@@ -37,14 +37,13 @@ class MenuViewController: UIViewController {
         
         fetchAllMenuItems()
         setupNavigationBar()
+        setupAI()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.pin.all()
         activityIndicator.pin.hCenter().vCenter().width(50).height(50).sizeToFit()
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
     }
     
     private func setupNavigationBar() {
@@ -53,6 +52,11 @@ class MenuViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.barTintColor = .systemGroupedBackground
         navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    func setupAI() {
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
     }
     
     func fetchAllMenuItems() {
@@ -123,6 +127,7 @@ class MenuViewController: UIViewController {
             DispatchQueue.main.async {
                 self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
                 self.allCategoriesShown = true
+                self.activityIndicator.stopAnimating()
                 print("table view reloaded 2 time")
             }
         }
