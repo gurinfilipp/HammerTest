@@ -68,58 +68,47 @@ class MenuViewController: UIViewController {
             
             NetworkManager.fetchMenu(for: "pizza", on: serialQueue) { response in
                 let dataToShow = response.results
-                print("1) Pizza data to show gets result")
                 dataToShow.forEach {
                     $0.mealType = .pizza
                 }
                 self.menuItems = dataToShow
-                print("2) Pizza added in the array")
                 DispatchQueue.main.async {
                     self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
                     self.activityIndicator.stopAnimating()
-                    print("table view reloaded 1 time")
                 }
                 group.leave()
             }
             group.wait()
             
             group.enter()
-            NetworkManager.fetchMenu(for: "pasta", on: serialQueue) { pastaResults in
-                let dataToShow = pastaResults.results
-                print("3) Pasta data to show gets result")
+            NetworkManager.fetchMenu(for: "pasta", on: serialQueue) { response in
+                let dataToShow = response.results
                 dataToShow.forEach {
                     $0.mealType = .combo
                 }
                 self.menuItems.append(contentsOf: dataToShow)
-                print("4) Pasta added in the array")
                 group.leave()
             }
             group.wait()
             
             group.enter()
-            NetworkManager.fetchMenu(for: "dessert", on: serialQueue) { pizzaResults in
-                let dataToShow = pizzaResults.results
-                print("5) Desserts data to show gets result")
+            NetworkManager.fetchMenu(for: "dessert", on: serialQueue) { response in
+                let dataToShow = response.results
                 dataToShow.forEach {
                     $0.mealType = .desert
                 }
                 self.menuItems.append(contentsOf: dataToShow)
-                print("6) Desserts added in the array")
                 group.leave()
             }
             group.wait()
             
             group.enter()
-            NetworkManager.fetchMenu(for: "drinks", on: serialQueue) { pizzaResults in
-                let dataToShow = pizzaResults.results
-                print("7) Drinks data to show gets result")
+            NetworkManager.fetchMenu(for: "drinks", on: serialQueue) { response in
+                let dataToShow = response.results
                 dataToShow.forEach {
                     $0.mealType = .drinks
                 }
                 self.menuItems.append(contentsOf: dataToShow)
-                print("8) Drinks added in the array")
-                sleep(1)
-                print("DONT FORGET ABOUT SLEEP")
                 group.leave()
             }
             group.wait()
@@ -128,7 +117,6 @@ class MenuViewController: UIViewController {
                 self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
                 self.allCategoriesShown = true
                 self.activityIndicator.stopAnimating()
-                print("table view reloaded 2 time")
             }
         }
     }
