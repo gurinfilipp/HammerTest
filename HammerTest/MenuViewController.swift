@@ -62,24 +62,30 @@ class MenuViewController: UIViewController {
     }
     
     func fetchAllMenuItems() {
-     
-        let serialQueue = DispatchQueue(label: "SerialQueue")
-        serialQueue.sync {
-        NetworkManager.fetchMenu(for: "pizza") { pizzaResults in
-            let dataToShow = pizzaResults.results
-            dataToShow.forEach {  
+     let serialQueue = DispatchQueue(label: "SerialQueue")
+        serialQueue.async {
+           
+        let group = DispatchGroup()
+        group.enter()
+        NetworkManager.fetchMenu(for: "pizza") { response in
+            let dataToShow = response.results
+            dataToShow.forEach {
                 $0.mealType = .pizza
             }
             self.menuItems = dataToShow
+            group.leave()
+            print("Pizza fetched")
         }
-        }
-            DispatchQueue.main.async {
-                print("MY PIZZA ITEMS SARE \(self.menuItems)")
-                self.sortedMenuArray = self.sortMenuArray()
-                self.tableView.reloadData()
-            }
         
-        serialQueue.sync {
+//            DispatchQueue.main.async {
+//                print("MY PIZZA ITEMS SARE \(self.menuItems)")
+//                self.sortedMenuArray = self.sortMenuArray()
+//                self.tableView.reloadData()
+//            }
+        
+        group.wait()
+        
+            group.enter()
         NetworkManager.fetchMenu(for: "pasta") { pastaResults in
             let dataToShow = pastaResults.results
             print("pasta is ocming")
@@ -87,14 +93,15 @@ class MenuViewController: UIViewController {
                 $0.mealType = .combo
             }
             self.menuItems.append(contentsOf: dataToShow)
+            group.leave()
             print("MY PASTA ITEMS SARE \(self.menuItems)")
         }
-        }
+        
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
   
-        serialQueue.sync {
+            group.enter()
         NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
             let dataToShow = pizzaResults.results
             print("desertiscoming")
@@ -102,16 +109,17 @@ class MenuViewController: UIViewController {
                 $0.mealType = .desert
             }
             self.menuItems.append(contentsOf: dataToShow)
+            group.leave()
             print("MY  Desrtt ITEMS SARE \(self.menuItems)")
         }
-        }
+        
             DispatchQueue.main.async {
                 
               //  self.sortedMenuArray = self.sortMenuArray()
                 self.tableView.reloadData()
             }
-        serialQueue.sync {
-   
+    
+            group.enter()
             NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
                 let dataToShow = pizzaResults.results
                 print("drinks are coming")
@@ -119,17 +127,90 @@ class MenuViewController: UIViewController {
                     $0.mealType = .drinks
                 }
                 self.menuItems.append(contentsOf: dataToShow)
+                group.leave()
                 print("MY  drinks ITEMS SARE \(self.menuItems)")
             }
-        }
+        
                 DispatchQueue.main.async {
                     
                   //  self.sortedMenuArray = self.sortMenuArray()
                     self.tableView.reloadData()
                 }
         
-        print("well, full menu items are \(menuItems)")
+            print("well, full menu items are \(self.menuItems)")
+        }
             }
+    
+    
+//    func fetchAllMenuItems() {     WORKING WITH SHUFFLE
+//
+//        let serialQueue = DispatchQueue(label: "SerialQueue")
+//        serialQueue.sync {
+//        NetworkManager.fetchMenu(for: "pizza") { pizzaResults in
+//            let dataToShow = pizzaResults.results
+//            dataToShow.forEach {
+//                $0.mealType = .pizza
+//            }
+//            self.menuItems = dataToShow
+//        }
+//        }
+//            DispatchQueue.main.async {
+//                print("MY PIZZA ITEMS SARE \(self.menuItems)")
+//                self.sortedMenuArray = self.sortMenuArray()
+//                self.tableView.reloadData()
+//            }
+//
+//        serialQueue.sync {
+//        NetworkManager.fetchMenu(for: "pasta") { pastaResults in
+//            let dataToShow = pastaResults.results
+//            print("pasta is ocming")
+//            dataToShow.forEach {
+//                $0.mealType = .combo
+//            }
+//            self.menuItems.append(contentsOf: dataToShow)
+//            print("MY PASTA ITEMS SARE \(self.menuItems)")
+//        }
+//        }
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//
+//        serialQueue.sync {
+//        NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
+//            let dataToShow = pizzaResults.results
+//            print("desertiscoming")
+//            dataToShow.forEach {
+//                $0.mealType = .desert
+//            }
+//            self.menuItems.append(contentsOf: dataToShow)
+//            print("MY  Desrtt ITEMS SARE \(self.menuItems)")
+//        }
+//        }
+//            DispatchQueue.main.async {
+//
+//              //  self.sortedMenuArray = self.sortMenuArray()
+//                self.tableView.reloadData()
+//            }
+//        serialQueue.sync {
+//
+//            NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
+//                let dataToShow = pizzaResults.results
+//                print("drinks are coming")
+//                dataToShow.forEach {
+//                    $0.mealType = .drinks
+//                }
+//                self.menuItems.append(contentsOf: dataToShow)
+//                print("MY  drinks ITEMS SARE \(self.menuItems)")
+//            }
+//        }
+//                DispatchQueue.main.async {
+//
+//                  //  self.sortedMenuArray = self.sortMenuArray()
+//                    self.tableView.reloadData()
+//                }
+//
+//        print("well, full menu items are \(menuItems)")
+//            }
             
            
      
