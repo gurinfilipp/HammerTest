@@ -85,11 +85,11 @@
 			children = (
 				C76096DE26999A2B00BDA264 /* Model */,
 				C76096DD26999A0F00BDA264 /* Cell */,
-				C76096DC269999F300BDA264 /* Additional */,
 				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
 				C76096DA2699986500BDA264 /* CategoriesView.swift */,
 				C76096E12699E3BB00BDA264 /* CityViewController.swift */,
 				C76096E3269ADDA500BDA264 /* NetworkManager.swift */,
+				C76096DC269999F300BDA264 /* Additional */,
 			);
 			path = HammerTest;
 			sourceTree = "<group>";
