@@ -14,9 +14,9 @@ final class MenuItemTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        
         return label
     }()
+    
     private let itemImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -24,25 +24,23 @@ final class MenuItemTableViewCell: UITableViewCell {
         imageView.clipsToBounds = true
         return imageView
     }()
+    
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14)
-        
         return label
     }()
+    
     private let minimumPriceButton: UIButton = {
         let button = UIButton(type: .system)
-        
         button.tintColor = .red
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.red.cgColor
-        
         return button
     }()
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,7 +56,6 @@ final class MenuItemTableViewCell: UITableViewCell {
             contentView.addSubview($0)
         }
         
-   
         itemImageView.pin
             .vCenter()
             .left(16)
@@ -90,13 +87,13 @@ final class MenuItemTableViewCell: UITableViewCell {
     
     func configure(with item: MenuItem) {
         nameLabel.text = item.title
+        
         descriptionLabel.text = item.title
+        
         guard let imageURL = URL(string: item.image) else { return }
         guard let imageData = try? Data(contentsOf: imageURL) else { return }
-        
         itemImageView.image = UIImage(data: imageData)
         
         minimumPriceButton.setTitle(item.title, for: .normal)
     }
-    
 }

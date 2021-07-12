@@ -10,17 +10,18 @@ import UIKit
 
 final class CategoryCell: UICollectionViewCell {
     private let categoryLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.textColor = UIColor.red.withAlphaComponent(0.5)
         label.font = UIFont.systemFont(ofSize: 14)
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
+        label.textAlignment = .center
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(categoryLabel)
-        categoryLabel.layer.cornerRadius = 10
-        categoryLabel.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
@@ -30,7 +31,6 @@ final class CategoryCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         categoryLabel.pin.all()
-        categoryLabel.textAlignment = .center
     }
     
     func configure(with category: String) {
@@ -43,7 +43,7 @@ final class CategoryCell: UICollectionViewCell {
     }
     
     func makeTitleStandart() {
-        categoryLabel.textColor = UIColor.red.withAlphaComponent(0.5)
         categoryLabel.font = UIFont.systemFont(ofSize: 14)
+        categoryLabel.textColor = UIColor.red.withAlphaComponent(0.5)
     }
 }

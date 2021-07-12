@@ -23,11 +23,13 @@ class CityViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(placeholderLabel)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(dismissViewController))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Отмена", style: .plain, target: self, action: #selector(dismissViewController))
-    
+        setupNavigationBar()
     }
     
+    private func setupNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(dismissViewController))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Отмена", style: .plain, target: self, action: #selector(dismissViewController))
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -38,5 +40,4 @@ class CityViewController: UIViewController {
     private func dismissViewController() {
         dismiss(animated: true, completion: nil)
     }
-    
 }

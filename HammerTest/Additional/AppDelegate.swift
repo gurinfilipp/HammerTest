@@ -9,11 +9,10 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-var window: UIWindow?
-
+    
+    var window: UIWindow?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         
         let menuViewController = MenuViewController()
         let contactsViewController = UIViewController()
@@ -39,7 +38,7 @@ var window: UIWindow?
         mainTabBarController.tabBar.barTintColor = .white
         mainTabBarController.tabBar.tintColor = .red
         mainTabBarController.viewControllers = [menuNavigationController, contactsNavigationController, accountNavigationController, orderNavigationController]
-          
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = mainTabBarController
         window?.makeKeyAndVisible()

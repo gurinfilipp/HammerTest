@@ -12,13 +12,11 @@ protocol FooterViewTapDelegate: AnyObject {
     func moveTo(category: String)
 }
 
-
 class CategoriesView: UIView {
     
     private var categories: [String] = []
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 10
         flowLayout.minimumInteritemSpacing = 40
@@ -26,17 +24,16 @@ class CategoriesView: UIView {
         return UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     }()
     var currentCategory: Int = 0
-
-    
-    
     weak var delegate: MenuViewController?
     
     init(frame: CGRect, categories: [String]) {
         super.init(frame: frame)
-        
-        
         self.categories = categories
         addSubview(collectionView)
+        collectionViewSetup()
+    }
+    
+    func collectionViewSetup() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.pin.all()
@@ -48,7 +45,6 @@ class CategoriesView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -66,8 +62,8 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
             cell.makeTitleBold()
         } else {
             cell.backgroundColor = UIColor.clear
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
             cell.makeTitleStandart()
         }
         return cell
@@ -82,10 +78,9 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       self.currentCategory = indexPath.row
+        self.currentCategory = indexPath.row
         collectionView.reloadData()
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        
         delegate?.moveTo(category: categories[indexPath.row])
     }
     
