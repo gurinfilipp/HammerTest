@@ -41,6 +41,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAllMenuItems()
+
         tableView.reloadData()
         view.addSubview(tableView)
         view.backgroundColor = .white
@@ -52,7 +53,7 @@ class MenuViewController: UIViewController {
         setupNavigationBar()
         setupTableView()
         
-        categoryPoints = findNewCategoryPoint()
+    //    categoryPoints = findNewCategoryPoint()
      //   let newArray = sortMenuArray()
       //  print(newArray)
       //  menuItems = sortMenuArray()
@@ -70,18 +71,15 @@ class MenuViewController: UIViewController {
                 $0.mealType = .pizza
             }
             self.menuItems = dataToShow
+        }
+        }
             DispatchQueue.main.async {
                 print("MY PIZZA ITEMS SARE \(self.menuItems)")
                 self.sortedMenuArray = self.sortMenuArray()
                 self.tableView.reloadData()
             }
-        }
-    
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
-            
         
+        serialQueue.sync {
         NetworkManager.fetchMenu(for: "pasta") { pastaResults in
             let dataToShow = pastaResults.results
             print("pasta is ocming")
@@ -90,16 +88,13 @@ class MenuViewController: UIViewController {
             }
             self.menuItems.append(contentsOf: dataToShow)
             print("MY PASTA ITEMS SARE \(self.menuItems)")
+        }
+        }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }
-    
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
-        
-        
+  
+        serialQueue.sync {
         NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
             let dataToShow = pizzaResults.results
             print("desertiscoming")
@@ -108,17 +103,15 @@ class MenuViewController: UIViewController {
             }
             self.menuItems.append(contentsOf: dataToShow)
             print("MY  Desrtt ITEMS SARE \(self.menuItems)")
+        }
+        }
             DispatchQueue.main.async {
                 
               //  self.sortedMenuArray = self.sortMenuArray()
                 self.tableView.reloadData()
             }
-        }
- 
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
-            
+        serialQueue.sync {
+   
             NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
                 let dataToShow = pizzaResults.results
                 print("drinks are coming")
@@ -127,17 +120,18 @@ class MenuViewController: UIViewController {
                 }
                 self.menuItems.append(contentsOf: dataToShow)
                 print("MY  drinks ITEMS SARE \(self.menuItems)")
+            }
+        }
                 DispatchQueue.main.async {
                     
                   //  self.sortedMenuArray = self.sortMenuArray()
                     self.tableView.reloadData()
                 }
+        
+        print("well, full menu items are \(menuItems)")
             }
-            print("well, full menu items are \(menuItems)")
-            }
-       
-        let wonder = sortMenuArray()
-        }
+            
+           
      
         
      
@@ -173,23 +167,23 @@ class MenuViewController: UIViewController {
         return sortedMenuArray
     }
     
-    func findNewCategoryPoint() -> [Int] {
-        var categoriesPointArray: [Int] = []
-        if let pizzaCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .pizza }) {
-            categoriesPointArray.append(pizzaCategoryIndex)
-        }
-        if let comboCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .combo }) {
-            categoriesPointArray.append(comboCategoryIndex)
-        }
-        if let desertCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .desert }) {
-            categoriesPointArray.append(desertCategoryIndex)
-        }
-        if let drinksCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .drinks }) {
-            categoriesPointArray.append(drinksCategoryIndex)
-        }
-        print(categoriesPointArray)
-        return categoriesPointArray
-    }
+//    func findNewCategoryPoint() -> [Int] {
+//        var categoriesPointArray: [Int] = []
+//        if let pizzaCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .pizza }) {
+//            categoriesPointArray.append(pizzaCategoryIndex)
+//        }
+//        if let comboCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .combo }) {
+//            categoriesPointArray.append(comboCategoryIndex)
+//        }
+//        if let desertCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .desert }) {
+//            categoriesPointArray.append(desertCategoryIndex)
+//        }
+//        if let drinksCategoryIndex = self.sortMenuArray().firstIndex(where: { $0.mealType == .drinks }) {
+//            categoriesPointArray.append(drinksCategoryIndex)
+//        }
+//        print(categoriesPointArray)
+//        return categoriesPointArray
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
