@@ -22,7 +22,7 @@ class MenuViewController: UIViewController {
     private var menuItems: [MenuItem] = [] {
         didSet {
             tableView.reloadData()
-            print("number of items in menu items is \(menuItems.count)")
+          //  print("number of items in menu items is \(menuItems.count)")
         }
     }
 
@@ -61,6 +61,8 @@ class MenuViewController: UIViewController {
     //    sortedMenuArray = sortMenuArray()
     }
     
+    
+    
     func fetchAllMenuItems() {
      let serialQueue = DispatchQueue(label: "SerialQueue")
         serialQueue.async {
@@ -69,12 +71,13 @@ class MenuViewController: UIViewController {
         group.enter()
         NetworkManager.fetchMenu(for: "pizza") { response in
             let dataToShow = response.results
+            print("1) Pizza data to show gets result")
             dataToShow.forEach {
                 $0.mealType = .pizza
             }
             self.menuItems = dataToShow
+            print("2) Pizza added in the array")
             group.leave()
-            print("Pizza fetched")
         }
         
 //            DispatchQueue.main.async {
@@ -88,56 +91,57 @@ class MenuViewController: UIViewController {
             group.enter()
         NetworkManager.fetchMenu(for: "pasta") { pastaResults in
             let dataToShow = pastaResults.results
-            print("pasta is ocming")
+            print("3) Pasta data to show gets result")
             dataToShow.forEach {
                 $0.mealType = .combo
             }
             self.menuItems.append(contentsOf: dataToShow)
+            print("4) Pasta added in the array")
             group.leave()
-            print("MY PASTA ITEMS SARE \(self.menuItems)")
         }
-        
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            group.wait()
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
   
             group.enter()
         NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
             let dataToShow = pizzaResults.results
-            print("desertiscoming")
+            print("5) Desserts data to show gets result")
             dataToShow.forEach {
                 $0.mealType = .desert
             }
             self.menuItems.append(contentsOf: dataToShow)
+            print("6) Desserts added in the array")
             group.leave()
-            print("MY  Desrtt ITEMS SARE \(self.menuItems)")
         }
-        
-            DispatchQueue.main.async {
-                
-              //  self.sortedMenuArray = self.sortMenuArray()
-                self.tableView.reloadData()
-            }
+            group.wait()
+//            DispatchQueue.main.async {
+//
+//              //  self.sortedMenuArray = self.sortMenuArray()
+//                self.tableView.reloadData()
+//            }
     
             group.enter()
             NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
                 let dataToShow = pizzaResults.results
-                print("drinks are coming")
+                print("7) Drinks data to show gets result")
                 dataToShow.forEach {
                     $0.mealType = .drinks
                 }
                 self.menuItems.append(contentsOf: dataToShow)
+                print("8) Drinks added in the array")
                 group.leave()
-                print("MY  drinks ITEMS SARE \(self.menuItems)")
+             
             }
+            group.wait()
+//                DispatchQueue.main.async {
+//
+//                  //  self.sortedMenuArray = self.sortMenuArray()
+//                    self.tableView.reloadData()
+//                }
         
-                DispatchQueue.main.async {
-                    
-                  //  self.sortedMenuArray = self.sortMenuArray()
-                    self.tableView.reloadData()
-                }
-        
-            print("well, full menu items are \(self.menuItems)")
+           // print("well, full menu items are \(self.menuItems)")
         }
             }
     
