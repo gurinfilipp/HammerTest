@@ -19,12 +19,13 @@ class MenuViewController: UIViewController {
     }()
     
     
-    private var menuItems: [MenuItem] = [] {
-        didSet {
-            tableView.reloadData()
-          //  print("number of items in menu items is \(menuItems.count)")
-        }
-    }
+    private var menuItems: [MenuItem] = []
+//    {
+//        didSet {
+//            tableView.reloadData()
+//            print("table view reloaded")
+//        }
+//    }
 
     var sortedMenuArray: [MenuItem] = [] {
         didSet {
@@ -42,7 +43,7 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         fetchAllMenuItems()
 
-        tableView.reloadData()
+    //    tableView.reloadData()
         view.addSubview(tableView)
         view.backgroundColor = .white
         
@@ -57,39 +58,43 @@ class MenuViewController: UIViewController {
      //   let newArray = sortMenuArray()
       //  print(newArray)
       //  menuItems = sortMenuArray()
-        tableView.reloadData()
+       // tableView.reloadData()
     //    sortedMenuArray = sortMenuArray()
     }
     
     
     
     func fetchAllMenuItems() {
-     let serialQueue = DispatchQueue(label: "SerialQueue")
+        let serialQueue = DispatchQueue(label: "SerialQueue")
+        
         serialQueue.async {
-           
+            
         let group = DispatchGroup()
         group.enter()
+        
         NetworkManager.fetchMenu(for: "pizza") { response in
             let dataToShow = response.results
             print("1) Pizza data to show gets result")
             dataToShow.forEach {
                 $0.mealType = .pizza
             }
+            
             self.menuItems = dataToShow
             print("2) Pizza added in the array")
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                print("table view reloaded 1 time")
+            }
             group.leave()
+           
         }
-        
-//            DispatchQueue.main.async {
-//                print("MY PIZZA ITEMS SARE \(self.menuItems)")
-//                self.sortedMenuArray = self.sortMenuArray()
-//                self.tableView.reloadData()
-//            }
-        
         group.wait()
+            
         
             group.enter()
         NetworkManager.fetchMenu(for: "pasta") { pastaResults in
+            
             let dataToShow = pastaResults.results
             print("3) Pasta data to show gets result")
             dataToShow.forEach {
@@ -97,12 +102,11 @@ class MenuViewController: UIViewController {
             }
             self.menuItems.append(contentsOf: dataToShow)
             print("4) Pasta added in the array")
+            
+            
             group.leave()
         }
             group.wait()
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
   
             group.enter()
         NetworkManager.fetchMenu(for: "dessert") { pizzaResults in
@@ -116,11 +120,7 @@ class MenuViewController: UIViewController {
             group.leave()
         }
             group.wait()
-//            DispatchQueue.main.async {
-//
-//              //  self.sortedMenuArray = self.sortMenuArray()
-//                self.tableView.reloadData()
-//            }
+
     
             group.enter()
             NetworkManager.fetchMenu(for: "drinks") { pizzaResults in
@@ -131,17 +131,17 @@ class MenuViewController: UIViewController {
                 }
                 self.menuItems.append(contentsOf: dataToShow)
                 print("8) Drinks added in the array")
+                sleep(5)
                 group.leave()
              
             }
             group.wait()
-//                DispatchQueue.main.async {
-//
-//                  //  self.sortedMenuArray = self.sortMenuArray()
-//                    self.tableView.reloadData()
-//                }
-        
-           // print("well, full menu items are \(self.menuItems)")
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                print("table view reloaded 2 time")
+            }
+
         }
             }
     
