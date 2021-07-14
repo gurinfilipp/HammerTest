@@ -17,18 +17,23 @@ class MenuViewController: UIViewController {
         
         return tableView
     }()
-    let activityIndicator = UIActivityIndicatorView(style: .medium)
     
     private var menuItems: [MenuItem] = []
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
     let categories: [String] = MealType.allCases.map { $0.rawValue }
-    var allCategoriesShown = false
+    var allCategoriesShown = false {
+        didSet {
+            tableView.reloadData()
+            self.menuItemsCache = []
+            saveMenuCache()
+        }
+    }
+    var menuItemsCache: [MenuItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        restoreData()
         view.addSubview(tableView)
-        view.addSubview(activityIndicator)
         view.backgroundColor = .white
         
         tableView.dataSource = self
@@ -37,13 +42,6 @@ class MenuViewController: UIViewController {
         
         fetchAllMenuItems()
         setupNavigationBar()
-        setupAI()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.pin.all()
-        activityIndicator.pin.hCenter().vCenter().width(50).height(50).sizeToFit()
     }
     
     private func setupNavigationBar() {
@@ -54,12 +52,47 @@ class MenuViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
     }
     
-    func setupAI() {
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.pin.all()
     }
     
-    func fetchAllMenuItems() {
+    private func restoreData() {
+        guard let url = documentsDirURL() else {
+            return
+        }
+        let fileUrl = url.appendingPathComponent("menuItems").appendingPathExtension("plist")
+        let propertyListDecoder = PropertyListDecoder()
+        if let retrievedMenuItemsData = try? Data(contentsOf: fileUrl),
+           let decodedMenuItems = try?
+            propertyListDecoder.decode(Array<MenuItem>.self,
+                                       from: retrievedMenuItemsData) {
+            self.menuItemsCache = decodedMenuItems
+        }
+    }
+    
+    private func saveMenuCache() {
+        for item in self.menuItems {
+            guard let newItem = item.copy() as? MenuItem else {
+                return
+            }
+            self.menuItemsCache.append(newItem)
+        }
+        guard let url = documentsDirURL() else {
+            return
+        }
+        let fileUrl = url.appendingPathComponent("menuItems").appendingPathExtension("plist")
+        let propertyListEncoder = PropertyListEncoder()
+        let encodedMenuItems = try? propertyListEncoder.encode(self.menuItemsCache)
+        
+        try? encodedMenuItems?.write(to: fileUrl, options: .noFileProtection)
+    }
+    
+    private func documentsDirURL() -> URL? {
+        return try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    }
+    
+    private func fetchAllMenuItems() {
         let globalSerialQueue = DispatchQueue(label: "GlobalSerialQueue")
         let serialQueue = DispatchQueue(label: "SerialQueue")
         globalSerialQueue.async {
@@ -74,7 +107,6 @@ class MenuViewController: UIViewController {
                 self.menuItems = dataToShow
                 DispatchQueue.main.async {
                     self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-                    self.activityIndicator.stopAnimating()
                 }
                 group.leave()
             }
@@ -116,7 +148,6 @@ class MenuViewController: UIViewController {
             DispatchQueue.main.async {
                 self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
                 self.allCategoriesShown = true
-                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -141,17 +172,27 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
-            return menuItems.count
+            if self.allCategoriesShown {
+                return menuItems.count
+            } else {
+                return menuItemsCache.count
+            }
         default:
             return 0
         }
     }
-
+    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         var categoriesPoints: [Int] = []
         for category in categories {
-            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            categoriesPoints.append(firstCategoryItem)
+            if self.allCategoriesShown {
+                guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+                categoriesPoints.append(firstCategoryItem)
+            } else {
+                guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+                categoriesPoints.append(firstCategoryItem)
+            }
+            
         }
         let subviewsArray = tableView.subviews
         let categoryView = subviewsArray.first {
@@ -169,8 +210,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
                 newCategoryEnum == $0
             }
             castedCategoryView.categoryChanged(with: newCategoryIndex ?? 0)
-            }
         }
+    }
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -200,7 +241,12 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
-            cell.configure(with: menuItems[indexPath.row])
+            if self.allCategoriesShown {
+                cell.configure(with: menuItems[indexPath.row])
+            } else {
+                
+                cell.configure(with: menuItemsCache[indexPath.row])
+            }
             return cell
         default:
             return .init()
@@ -221,9 +267,13 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
-        guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-        guard self.allCategoriesShown else { return }
-        self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        if self.allCategoriesShown {
+            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        } else {
+            guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        }
     }
 }
 

@@ -7,6 +7,7 @@
 
 import UIKit
 import PinLayout
+import SDWebImage
 
 final class MenuItemTableViewCell: UITableViewCell {
 
@@ -27,7 +28,7 @@ final class MenuItemTableViewCell: UITableViewCell {
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 4
         label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14)
         return label
@@ -90,10 +91,8 @@ final class MenuItemTableViewCell: UITableViewCell {
         
         descriptionLabel.text = item.title
         
-        guard let imageURL = URL(string: item.image) else { return }
-        guard let imageData = try? Data(contentsOf: imageURL) else { return }
-        itemImageView.image = UIImage(data: imageData)
-        
         minimumPriceButton.setTitle(item.title, for: .normal)
+
+        itemImageView.sd_setImage(with: URL(string: item.image), placeholderImage: UIImage(named: "placeholder"))
     }
 }
