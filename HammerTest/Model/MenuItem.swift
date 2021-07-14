@@ -12,14 +12,14 @@ struct JsonResults: Decodable {
     var results: [MenuItem]
 }
 
-enum MealType: String, CaseIterable, Decodable {
+enum MealType: String, CaseIterable, Decodable, Encodable {
     case pizza = "Пицца"
     case combo = "Паста"
     case desert = "Десерты"
     case drinks = "Напитки"
 }
 
-class MenuItem: Decodable, NSCopying {
+class MenuItem: Decodable, NSCopying, Encodable {
     var title: String
     var image: String
     //    var description: String

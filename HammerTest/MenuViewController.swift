@@ -30,13 +30,15 @@ class MenuViewController: UIViewController {
         }
     }
     private let realm = try! Realm()
-//    private var dataSource: Results<MenuItemCache>!
+    //    private var dataSource: Results<MenuItemCache>!
     
     var menuItemsCache: [MenuItem] = []
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        restoreData()
+        print("cacheItems - \(self.menuItemsCache)")
         view.addSubview(tableView)
         view.addSubview(activityIndicator)
         view.backgroundColor = .white
@@ -57,28 +59,35 @@ class MenuViewController: UIViewController {
         activityIndicator.pin.hCenter().vCenter().width(50).height(50).sizeToFit()
     }
     
+    private func restoreData() {
+        guard let url = documentsDirURL() else {
+            return
+        }
+        let fileUrl = url.appendingPathComponent("menuItems").appendingPathExtension("plist")
+        let propertyListDecoder = PropertyListDecoder()
+        if let retrievedMenuItemsData = try? Data(contentsOf: fileUrl),
+           let decodedMenuItems = try?
+            propertyListDecoder.decode(Array<MenuItem>.self,
+                                       from: retrievedMenuItemsData) {
+            self.menuItemsCache = decodedMenuItems
+        }
+    }
+    
     private func saveMenuCache() {
-//        guard let castedMenuItems = self.menuItems as? [MenuItemCache] else {
-//            debugPrint("DEBUG: Cannot save cache!")
-//        }
-//        self.menuItemsCache = castedMenuItems
-//        print(menuItemsCache[0])
-//        for item in self.menuItems {
-//            let newItem = item.copy() as! MenuItem
-//            self.menuItemsCache.append(newItem)
-//        }
         for item in self.menuItems {
             guard let newItem = item.copy() as? MenuItem else {
-                print("Debug: Cannot copy new Item!")
                 return
             }
             self.menuItemsCache.append(newItem)
         }
-        print(menuItemsCache)
         guard let url = documentsDirURL() else {
             return
         }
-        let fileUrl = url.appendingPathComponent()
+        let fileUrl = url.appendingPathComponent("menuItems").appendingPathExtension("plist")
+        let propertyListEncoder = PropertyListEncoder()
+        let encodedMenuItems = try? propertyListEncoder.encode(self.menuItemsCache)
+        
+        try? encodedMenuItems?.write(to: fileUrl, options: .noFileProtection)
     }
     
     private func documentsDirURL() -> URL? {
@@ -181,7 +190,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return 1
         case 1:
             if self.allCategoriesShown {
-            return menuItems.count
+                return menuItems.count
             } else {
                 return menuItemsCache.count
             }
@@ -189,12 +198,12 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return 0
         }
     }
-
+    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         var categoriesPoints: [Int] = []
         for category in categories {
             if self.allCategoriesShown {
-            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+                guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
                 categoriesPoints.append(firstCategoryItem)
             } else {
                 guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
@@ -218,8 +227,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
                 newCategoryEnum == $0
             }
             castedCategoryView.categoryChanged(with: newCategoryIndex ?? 0)
-            }
         }
+    }
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -250,7 +259,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
             if self.allCategoriesShown {
-            cell.configure(with: menuItems[indexPath.row])
+                cell.configure(with: menuItems[indexPath.row])
             } else {
                 
                 cell.configure(with: menuItemsCache[indexPath.row])
@@ -282,8 +291,8 @@ extension MenuViewController: FooterViewTapDelegate {
             guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
             self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
         }
-  //      guard self.allCategoriesShown else { return }
-  //      self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        //      guard self.allCategoriesShown else { return }
+        //      self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
 
