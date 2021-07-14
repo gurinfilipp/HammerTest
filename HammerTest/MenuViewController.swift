@@ -7,6 +7,7 @@
 
 import UIKit
 import PinLayout
+import RealmSwift
 
 class MenuViewController: UIViewController {
     
@@ -22,7 +23,16 @@ class MenuViewController: UIViewController {
     private var menuItems: [MenuItem] = []
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
     let categories: [String] = MealType.allCases.map { $0.rawValue }
-    var allCategoriesShown = false
+    var allCategoriesShown = false {
+        didSet {
+            tableView.reloadData()
+            saveMenuCache()
+        }
+    }
+    private let realm = try! Realm()
+//    private var dataSource: Results<MenuItemCache>!
+    
+    var menuItemsCache: [MenuItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +48,41 @@ class MenuViewController: UIViewController {
         fetchAllMenuItems()
         setupNavigationBar()
         setupAI()
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.pin.all()
         activityIndicator.pin.hCenter().vCenter().width(50).height(50).sizeToFit()
+    }
+    
+    private func saveMenuCache() {
+//        guard let castedMenuItems = self.menuItems as? [MenuItemCache] else {
+//            debugPrint("DEBUG: Cannot save cache!")
+//        }
+//        self.menuItemsCache = castedMenuItems
+//        print(menuItemsCache[0])
+//        for item in self.menuItems {
+//            let newItem = item.copy() as! MenuItem
+//            self.menuItemsCache.append(newItem)
+//        }
+        for item in self.menuItems {
+            guard let newItem = item.copy() as? MenuItem else {
+                print("Debug: Cannot copy new Item!")
+                return
+            }
+            self.menuItemsCache.append(newItem)
+        }
+        print(menuItemsCache)
+        guard let url = documentsDirURL() else {
+            return
+        }
+        let fileUrl = url.appendingPathComponent()
+    }
+    
+    private func documentsDirURL() -> URL? {
+        return try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
     
     private func setupNavigationBar() {
@@ -141,7 +180,11 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
+            if self.allCategoriesShown {
             return menuItems.count
+            } else {
+                return menuItemsCache.count
+            }
         default:
             return 0
         }
@@ -150,8 +193,14 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         var categoriesPoints: [Int] = []
         for category in categories {
+            if self.allCategoriesShown {
             guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            categoriesPoints.append(firstCategoryItem)
+                categoriesPoints.append(firstCategoryItem)
+            } else {
+                guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+                categoriesPoints.append(firstCategoryItem)
+            }
+            
         }
         let subviewsArray = tableView.subviews
         let categoryView = subviewsArray.first {
@@ -200,7 +249,12 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItemTableViewCell", for: indexPath) as? MenuItemTableViewCell else { return .init() }
+            if self.allCategoriesShown {
             cell.configure(with: menuItems[indexPath.row])
+            } else {
+                
+                cell.configure(with: menuItemsCache[indexPath.row])
+            }
             return cell
         default:
             return .init()
@@ -221,9 +275,15 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
-        guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-        guard self.allCategoriesShown else { return }
-        self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        if self.allCategoriesShown {
+            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        } else {
+            guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
+        }
+  //      guard self.allCategoriesShown else { return }
+  //      self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
 

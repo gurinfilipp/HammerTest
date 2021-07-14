@@ -7,6 +7,7 @@ target 'HammerTest' do
 
 pod 'PinLayout'
 pod 'Alamofire', '~> 5.4'
+pod 'RealmSwift'
 
   # Pods for HammerTest
 

@@ -1,20 +1,30 @@
 PODS:
   - Alamofire (5.4.3)
   - PinLayout (1.10.0)
+  - Realm (10.10.0):
+    - Realm/Headers (= 10.10.0)
+  - Realm/Headers (10.10.0)
+  - RealmSwift (10.10.0):
+    - Realm (= 10.10.0)
 
 DEPENDENCIES:
   - Alamofire (~> 5.4)
   - PinLayout
+  - RealmSwift
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - PinLayout
+    - Realm
+    - RealmSwift
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   PinLayout: e50e9a748b632905fca6e67043ea4b05d6c92186
+  Realm: f501df41a4222c67850c77cf135d472192ecf294
+  RealmSwift: c69aadfc7db0d60075178d037c2f34ada73d5201
 
-PODFILE CHECKSUM: e462870ecc4fdf5d6c296077dc110c6b4d96a1ae
+PODFILE CHECKSUM: 7407d5ca841f32f10ed66575f8dc4da385f4ff8b
 
 COCOAPODS: 1.10.1

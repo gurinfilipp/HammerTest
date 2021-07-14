@@ -90,10 +90,17 @@ final class MenuItemTableViewCell: UITableViewCell {
         
         descriptionLabel.text = item.title
         
-        guard let imageURL = URL(string: item.image) else { return }
-        guard let imageData = try? Data(contentsOf: imageURL) else { return }
+        minimumPriceButton.setTitle(item.title, for: .normal)
+        
+        guard let imageURL = URL(string: item.image) else {
+            return
+        }
+        guard let imageData = try? Data(contentsOf: imageURL) else {
+            itemImageView.image = UIImage(named: "placeholder")
+            return
+        }
         itemImageView.image = UIImage(data: imageData)
         
-        minimumPriceButton.setTitle(item.title, for: .normal)
+        
     }
 }
