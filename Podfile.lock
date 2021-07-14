@@ -1,30 +1,26 @@
 PODS:
   - Alamofire (5.4.3)
   - PinLayout (1.10.0)
-  - Realm (10.10.0):
-    - Realm/Headers (= 10.10.0)
-  - Realm/Headers (10.10.0)
-  - RealmSwift (10.10.0):
-    - Realm (= 10.10.0)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
 
 DEPENDENCIES:
   - Alamofire (~> 5.4)
   - PinLayout
-  - RealmSwift
+  - SDWebImage (~> 5.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - PinLayout
-    - Realm
-    - RealmSwift
+    - SDWebImage
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   PinLayout: e50e9a748b632905fca6e67043ea4b05d6c92186
-  Realm: f501df41a4222c67850c77cf135d472192ecf294
-  RealmSwift: c69aadfc7db0d60075178d037c2f34ada73d5201
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
 
-PODFILE CHECKSUM: 7407d5ca841f32f10ed66575f8dc4da385f4ff8b
+PODFILE CHECKSUM: d7335aa819f321e84e98f3e9661591d7b64d924b
 
 COCOAPODS: 1.10.1

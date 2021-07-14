@@ -7,7 +7,6 @@
 
 import UIKit
 import PinLayout
-import RealmSwift
 
 class MenuViewController: UIViewController {
     
@@ -18,7 +17,6 @@ class MenuViewController: UIViewController {
         
         return tableView
     }()
-    let activityIndicator = UIActivityIndicatorView(style: .medium)
     
     private var menuItems: [MenuItem] = []
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
@@ -26,21 +24,18 @@ class MenuViewController: UIViewController {
     var allCategoriesShown = false {
         didSet {
             tableView.reloadData()
+            self.menuItemsCache = []
             saveMenuCache()
         }
     }
-    private let realm = try! Realm()
-    //    private var dataSource: Results<MenuItemCache>!
     
     var menuItemsCache: [MenuItem] = []
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         restoreData()
         print("cacheItems - \(self.menuItemsCache)")
         view.addSubview(tableView)
-        view.addSubview(activityIndicator)
         view.backgroundColor = .white
         
         tableView.dataSource = self
@@ -49,14 +44,19 @@ class MenuViewController: UIViewController {
         
         fetchAllMenuItems()
         setupNavigationBar()
-        setupAI()
-        
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: currentCity , style: .plain, target: self, action: #selector(cityButtonTapped))
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.barTintColor = .systemGroupedBackground
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.pin.all()
-        activityIndicator.pin.hCenter().vCenter().width(50).height(50).sizeToFit()
     }
     
     private func restoreData() {
@@ -94,20 +94,7 @@ class MenuViewController: UIViewController {
         return try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     }
     
-    private func setupNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: currentCity , style: .plain, target: self, action: #selector(cityButtonTapped))
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.barTintColor = .systemGroupedBackground
-        navigationController?.navigationBar.shadowImage = UIImage()
-    }
-    
-    func setupAI() {
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
-    }
-    
-    func fetchAllMenuItems() {
+    private func fetchAllMenuItems() {
         let globalSerialQueue = DispatchQueue(label: "GlobalSerialQueue")
         let serialQueue = DispatchQueue(label: "SerialQueue")
         globalSerialQueue.async {
@@ -122,7 +109,6 @@ class MenuViewController: UIViewController {
                 self.menuItems = dataToShow
                 DispatchQueue.main.async {
                     self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-                    self.activityIndicator.stopAnimating()
                 }
                 group.leave()
             }
@@ -164,7 +150,6 @@ class MenuViewController: UIViewController {
             DispatchQueue.main.async {
                 self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
                 self.allCategoriesShown = true
-                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -291,8 +276,6 @@ extension MenuViewController: FooterViewTapDelegate {
             guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
             self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
         }
-        //      guard self.allCategoriesShown else { return }
-        //      self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
 

@@ -6,20 +6,19 @@
 //
 
 import Foundation
-import RealmSwift
 
 struct JsonResults: Decodable {
     var results: [MenuItem]
 }
 
-enum MealType: String, CaseIterable, Decodable, Encodable {
+enum MealType: String, CaseIterable, Codable {
     case pizza = "Пицца"
     case combo = "Паста"
     case desert = "Десерты"
     case drinks = "Напитки"
 }
 
-class MenuItem: Decodable, NSCopying, Encodable {
+class MenuItem: Codable, NSCopying {
     var title: String
     var image: String
     //    var description: String
@@ -31,8 +30,6 @@ class MenuItem: Decodable, NSCopying, Encodable {
         self.image = image
         self.mealType = mealType
     }
-    
-    
     
     func copy(with zone: NSZone? = nil) -> Any {
         let copy = MenuItem(title: title, image: image, mealType: mealType ?? .pizza)
