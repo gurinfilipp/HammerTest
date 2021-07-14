@@ -28,13 +28,11 @@ class MenuViewController: UIViewController {
             saveMenuCache()
         }
     }
-    
     var menuItemsCache: [MenuItem] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         restoreData()
-        print("cacheItems - \(self.menuItemsCache)")
         view.addSubview(tableView)
         view.backgroundColor = .white
         
