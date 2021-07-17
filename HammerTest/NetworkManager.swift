@@ -18,7 +18,7 @@ final class NetworkManager {
         var urlComponents = URLComponents(string: "https://api.spoonacular.com/recipes/complexSearch")!
             urlComponents.queryItems = [
                 "query" : category,
-                "apiKey" : "9df481a31a6a445ea9db910a919141b7"
+                "apiKey" : "77e5f605336042a987175e5a6421b822"
             ].map { URLQueryItem(name: $0.key, value: $0.value) }
         let request = AF.request(urlComponents)
         request.responseDecodable(of: JsonResults.self, queue: queue) { response in

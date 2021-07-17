@@ -12,10 +12,20 @@ struct JsonResults: Decodable {
 }
 
 enum MealType: String, CaseIterable, Codable {
-    case pizza = "Пицца"
-    case combo = "Паста"
-    case desert = "Десерты"
-    case drinks = "Напитки"
+    case pizza = "Pizza"
+    case combo = "Pasta"
+    case desert = "Dessert"
+    case drinks = "Drinks"
+    
+    init(rawValue: String) {
+        switch rawValue {
+        case "Pizza"  : self = .pizza
+        case "Pasta"  : self = .combo
+        case "Dessert": self = .desert
+        case "Drinks": self = .drinks
+        default: self = .pizza
+        }
+    }
 }
 
 class MenuItem: Codable, NSCopying {

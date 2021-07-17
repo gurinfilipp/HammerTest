@@ -93,61 +93,26 @@ class MenuViewController: UIViewController {
     }
     
     private func fetchAllMenuItems() {
+        self.menuItems = []
         let globalSerialQueue = DispatchQueue(label: "GlobalSerialQueue")
         let serialQueue = DispatchQueue(label: "SerialQueue")
+        let group = DispatchGroup()
         globalSerialQueue.async {
-            let group = DispatchGroup()
-            group.enter()
-            
-            NetworkManager.fetchMenu(for: "pizza", on: serialQueue) { response in
+            for category in MealType.allCases {
+                group.enter()
+                NetworkManager.fetchMenu(for: category.rawValue, on: serialQueue) { response in
                 let dataToShow = response.results
                 dataToShow.forEach {
-                    $0.mealType = .pizza
+                    $0.mealType = MealType(rawValue: category.rawValue)
                 }
-                self.menuItems = dataToShow
+                    self.menuItems.append(contentsOf: dataToShow)
+                    group.leave()
                 DispatchQueue.main.async {
-                    self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+                    self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+                    self.allCategoriesShown = true
                 }
-                group.leave()
             }
-            group.wait()
-            
-            group.enter()
-            NetworkManager.fetchMenu(for: "pasta", on: serialQueue) { response in
-                let dataToShow = response.results
-                dataToShow.forEach {
-                    $0.mealType = .combo
-                }
-                self.menuItems.append(contentsOf: dataToShow)
-                group.leave()
-            }
-            group.wait()
-            
-            group.enter()
-            NetworkManager.fetchMenu(for: "dessert", on: serialQueue) { response in
-                let dataToShow = response.results
-                dataToShow.forEach {
-                    $0.mealType = .desert
-                }
-                self.menuItems.append(contentsOf: dataToShow)
-                group.leave()
-            }
-            group.wait()
-            
-            group.enter()
-            NetworkManager.fetchMenu(for: "drinks", on: serialQueue) { response in
-                let dataToShow = response.results
-                dataToShow.forEach {
-                    $0.mealType = .drinks
-                }
-                self.menuItems.append(contentsOf: dataToShow)
-                group.leave()
-            }
-            group.wait()
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
-                self.allCategoriesShown = true
+                group.wait()
             }
         }
     }
