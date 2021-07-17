@@ -151,7 +151,6 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         guard let visibleRowsFromSectionOne = visibleRows?.filter({
             $0.section == 1
         }) else { return }
-        // Сверху получаем массив отображаемых ячеек только из 1 секции (минуя горизонтальную коллекцию)
         var arrayOfIndices: [Int] = []
         for row in visibleRowsFromSectionOne {
             arrayOfIndices.append(row.row)
@@ -161,7 +160,6 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             let dataArray = self.allCategoriesShown ? menuItems : menuItemsCache
             arrayOfMenuItems.append(dataArray[menuItemNumber])
         }
-        
         let mappedArrayOfMenuItems = arrayOfMenuItems.map { ($0.mealType, 1) }
         let counts = Dictionary(mappedArrayOfMenuItems, uniquingKeysWith: +)
         var mostUsed: MealType = .pizza
@@ -177,34 +175,6 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             $0 == mostUsed
         })!)
     }
-    
-    
-    //    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    //        var categoriesPoints: [Int] = []
-    //        for category in categories {
-    //            let array = self.allCategoriesShown ? menuItems : menuItemsCache
-    //            guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-    //            categoriesPoints.append(firstCategoryItem)
-    //        }
-    //        let subviewsArray = tableView.subviews
-    //        let categoryView = subviewsArray.first {
-    //            $0.tag == 1001
-    //        }
-    //        guard let castedCategoryView = categoryView as? CategoriesView else { return }
-    //        if categoriesPoints.contains(indexPath.row - 2) {
-    //            let newCategoryNumber = indexPath.row - 2
-    //            guard let newCategoryNumberInArray = categoriesPoints.firstIndex(of: newCategoryNumber) else {return}
-    //            let newCategory = MealType.allCases[newCategoryNumberInArray].rawValue
-    //            let newCategoryEnum = MealType.allCases.first {
-    //                $0.rawValue == newCategory
-    //            }
-    //            let newCategoryIndex = MealType.allCases.firstIndex {
-    //                newCategoryEnum == $0
-    //            }
-    //            castedCategoryView.categoryChanged(with: newCategoryIndex ?? 0)
-    //        }
-    //    }
-    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
