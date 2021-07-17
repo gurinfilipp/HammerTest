@@ -62,6 +62,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C721525826A3190600760926 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		C721525A26A3192700760926 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C76096DA2699986500BDA264 /* CategoriesView.swift */,
+				C76096E12699E3BB00BDA264 /* CityViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C721525B26A3195500760926 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				C76096E3269ADDA500BDA264 /* NetworkManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		C74C95E72698DDAF008C4920 = {
 			isa = PBXGroup;
 			children = (
@@ -84,11 +109,10 @@
 			isa = PBXGroup;
 			children = (
 				C76096DE26999A2B00BDA264 /* Model */,
+				C721525A26A3192700760926 /* View */,
+				C721525826A3190600760926 /* Controller */,
+				C721525B26A3195500760926 /* Managers */,
 				C76096DD26999A0F00BDA264 /* Cell */,
-				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
-				C76096DA2699986500BDA264 /* CategoriesView.swift */,
-				C76096E12699E3BB00BDA264 /* CityViewController.swift */,
-				C76096E3269ADDA500BDA264 /* NetworkManager.swift */,
 				C76096DC269999F300BDA264 /* Additional */,
 			);
 			path = HammerTest;
