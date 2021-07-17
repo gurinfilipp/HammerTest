@@ -14,7 +14,6 @@ class MenuViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemGroupedBackground
-        
         return tableView
     }()
     private var menuItems: [MenuItem] = []
@@ -57,7 +56,7 @@ class MenuViewController: UIViewController {
     }
     
     private func restoreData() {
-        guard let fileURL = documentsDirURL() else {
+        guard let fileURL = getFileURL() else {
             return
         }
         let propertyListDecoder = PropertyListDecoder()
@@ -70,7 +69,7 @@ class MenuViewController: UIViewController {
     }
     
     private func saveMenuCache() {
-        guard let fileURL = documentsDirURL() else {
+        guard let fileURL = getFileURL() else {
             return
         }
         for item in self.menuItems {
@@ -84,7 +83,7 @@ class MenuViewController: UIViewController {
         try? encodedMenuItems?.write(to: fileURL, options: .noFileProtection)
     }
     
-    private func documentsDirURL() -> URL? {
+    private func getFileURL() -> URL? {
         let documentsUrl = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         let fileUrl = documentsUrl?.appendingPathComponent("menuItems").appendingPathExtension("plist")
         return fileUrl
@@ -99,10 +98,10 @@ class MenuViewController: UIViewController {
             for category in MealType.allCases {
                 group.enter()
                 NetworkManager.fetchMenu(for: category.rawValue, on: serialQueue) { response in
-                let dataToShow = response.results
-                dataToShow.forEach {
-                    $0.mealType = MealType(rawValue: category.rawValue)
-                }
+                    let dataToShow = response.results
+                    dataToShow.forEach {
+                        $0.mealType = MealType(rawValue: category.rawValue)
+                    }
                     self.menuItems.append(contentsOf: dataToShow)
                     if category == MealType.allCases[0] {
                         DispatchQueue.main.async {
@@ -110,7 +109,7 @@ class MenuViewController: UIViewController {
                         }
                     }
                     group.leave()
-            }
+                }
                 group.wait()
             }
             DispatchQueue.main.async {
@@ -140,11 +139,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
-            if self.allCategoriesShown {
-                return menuItems.count
-            } else {
-                return menuItemsCache.count
-            }
+            let numberOfRows = self.allCategoriesShown ? menuItems.count : menuItemsCache.count
+            return numberOfRows
         default:
             return 0
         }
@@ -153,14 +149,9 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         var categoriesPoints: [Int] = []
         for category in categories {
-            if self.allCategoriesShown {
-                guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-                categoriesPoints.append(firstCategoryItem)
-            } else {
-                guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-                categoriesPoints.append(firstCategoryItem)
-            }
-            
+            let array = self.allCategoriesShown ? menuItems : menuItemsCache
+            guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            categoriesPoints.append(firstCategoryItem)
         }
         let subviewsArray = tableView.subviews
         let categoryView = subviewsArray.first {
@@ -234,13 +225,9 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
-        if self.allCategoriesShown {
-            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
-        } else {
-            guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
-        }
+        let array = self.allCategoriesShown ? menuItems : menuItemsCache
+        guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+        self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
 
