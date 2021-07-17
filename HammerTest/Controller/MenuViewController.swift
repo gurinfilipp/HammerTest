@@ -56,7 +56,7 @@ class MenuViewController: UIViewController {
     }
     
     private func restoreData() {
-        guard let fileURL = documentsDirURL() else {
+        guard let fileURL = getFileURL() else {
             return
         }
         let propertyListDecoder = PropertyListDecoder()
@@ -69,7 +69,7 @@ class MenuViewController: UIViewController {
     }
     
     private func saveMenuCache() {
-        guard let fileURL = documentsDirURL() else {
+        guard let fileURL = getFileURL() else {
             return
         }
         for item in self.menuItems {
@@ -83,7 +83,7 @@ class MenuViewController: UIViewController {
         try? encodedMenuItems?.write(to: fileURL, options: .noFileProtection)
     }
     
-    private func documentsDirURL() -> URL? {
+    private func getFileURL() -> URL? {
         let documentsUrl = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         let fileUrl = documentsUrl?.appendingPathComponent("menuItems").appendingPathExtension("plist")
         return fileUrl
