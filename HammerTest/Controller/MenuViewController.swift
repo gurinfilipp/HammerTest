@@ -153,8 +153,37 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         })
         // Сверху получаем массив отображаемых ячеек только из 1 секции (минуя горизонтальную коллекцию)
         print(visibleRowsFromSectionOne)
+        var array: [Int] = []
+        for row in visibleRowsFromSectionOne! {
+            array.append(row.row)
+        }
+        print("array is \(array)")
+        var newArray: [MenuItem] = []
+      //  guard self.allCategoriesShown else { return }
+        for menuItemNumber in array {
+            newArray.append(menuItemsCache  [menuItemNumber])
+            print("new array is mutating and now it is \(newArray)")
+        }
+        print("menu item is \(newArray)")
+         
+        let mappedNewArray = newArray.map { ($0.mealType, 1) }
+        let counts = Dictionary(mappedNewArray, uniquingKeysWith: +)
+        print(counts)
+        var mostUsed: MealType = .pizza
+        if let (value, count) = counts.max(by: {$0.1 < $1.1}) {
+            print("\(value) occurs \(count) times")
+            mostUsed = value
+            print("most used is \(mostUsed)")
+        }
         
-        
+        let subviewsArray = tableView.subviews
+                let categoryView = subviewsArray.first {
+                    $0.tag == 1001
+                }
+                guard let castedCategoryView = categoryView as? CategoriesView else { return }
+        castedCategoryView.categoryChanged(with: MealType.allCases.firstIndex(where: {
+            $0 == mostUsed
+        })!)
     }
     
     
@@ -238,7 +267,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
         let array = self.allCategoriesShown ? menuItems : menuItemsCache
-        guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+        guard let firstCategoryItem = array.firstIndex(where: { $0.mealType.rawValue == category }) else { return }
         self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
