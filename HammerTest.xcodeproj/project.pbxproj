@@ -66,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				C74C95F72698DDAF008C4920 /* MenuViewController.swift */,
+				C76096E12699E3BB00BDA264 /* CityViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -74,7 +75,6 @@
 			isa = PBXGroup;
 			children = (
 				C76096DA2699986500BDA264 /* CategoriesView.swift */,
-				C76096E12699E3BB00BDA264 /* CityViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
