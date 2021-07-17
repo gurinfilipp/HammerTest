@@ -167,7 +167,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         if categoriesPoints.contains(indexPath.row - 2) {
             let newCategoryNumber = indexPath.row - 2
             guard let newCategoryNumberInArray = categoriesPoints.firstIndex(of: newCategoryNumber) else {return}
-            let newCategory = self.categories[newCategoryNumberInArray]
+            //let newCategory = self.categories[newCategoryNumberInArray]
+            let newCategory = MealType.allCases[newCategoryNumberInArray].rawValue
             let newCategoryEnum = MealType.allCases.first {
                 $0.rawValue == newCategory
             }
@@ -209,7 +210,6 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
             if self.allCategoriesShown {
                 cell.configure(with: menuItems[indexPath.row])
             } else {
-                
                 cell.configure(with: menuItemsCache[indexPath.row])
             }
             return cell

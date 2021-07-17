@@ -84,8 +84,6 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.currentCategory = indexPath.row
-        collectionView.reloadData()
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         delegate?.moveTo(category: categories[indexPath.row])
     }

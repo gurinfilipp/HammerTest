@@ -34,7 +34,11 @@ final class CategoryCell: UICollectionViewCell {
     }
     
     func configure(with category: String) {
-        categoryLabel.text = category
+        switch category {
+        default: categoryLabel.text = "wow"
+        }
+        
+        //categoryLabel.text = category
     }
     
     func makeTitleBold() {
