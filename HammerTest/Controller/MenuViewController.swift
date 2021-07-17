@@ -14,7 +14,6 @@ class MenuViewController: UIViewController {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .systemGroupedBackground
-        
         return tableView
     }()
     private var menuItems: [MenuItem] = []
@@ -99,10 +98,10 @@ class MenuViewController: UIViewController {
             for category in MealType.allCases {
                 group.enter()
                 NetworkManager.fetchMenu(for: category.rawValue, on: serialQueue) { response in
-                let dataToShow = response.results
-                dataToShow.forEach {
-                    $0.mealType = MealType(rawValue: category.rawValue)
-                }
+                    let dataToShow = response.results
+                    dataToShow.forEach {
+                        $0.mealType = MealType(rawValue: category.rawValue)
+                    }
                     self.menuItems.append(contentsOf: dataToShow)
                     if category == MealType.allCases[0] {
                         DispatchQueue.main.async {
@@ -110,7 +109,7 @@ class MenuViewController: UIViewController {
                         }
                     }
                     group.leave()
-            }
+                }
                 group.wait()
             }
             DispatchQueue.main.async {
@@ -140,11 +139,8 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             return 1
         case 1:
-            if self.allCategoriesShown {
-                return menuItems.count
-            } else {
-                return menuItemsCache.count
-            }
+            let numberOfRows = self.allCategoriesShown ? menuItems.count : menuItemsCache.count
+            return numberOfRows
         default:
             return 0
         }
@@ -153,14 +149,9 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         var categoriesPoints: [Int] = []
         for category in categories {
-            if self.allCategoriesShown {
-                guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-                categoriesPoints.append(firstCategoryItem)
-            } else {
-                guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-                categoriesPoints.append(firstCategoryItem)
-            }
-            
+            let array = self.allCategoriesShown ? menuItems : menuItemsCache
+            guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+            categoriesPoints.append(firstCategoryItem)
         }
         let subviewsArray = tableView.subviews
         let categoryView = subviewsArray.first {
@@ -170,7 +161,6 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         if categoriesPoints.contains(indexPath.row - 2) {
             let newCategoryNumber = indexPath.row - 2
             guard let newCategoryNumberInArray = categoriesPoints.firstIndex(of: newCategoryNumber) else {return}
-            //let newCategory = self.categories[newCategoryNumberInArray]
             let newCategory = MealType.allCases[newCategoryNumberInArray].rawValue
             let newCategoryEnum = MealType.allCases.first {
                 $0.rawValue == newCategory
@@ -235,13 +225,9 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
-        if self.allCategoriesShown {
-            guard let firstCategoryItem = self.menuItems.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
-        } else {
-            guard let firstCategoryItem = self.menuItemsCache.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
-        }
+        let array = self.allCategoriesShown ? menuItems : menuItemsCache
+        guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+        self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }
 
