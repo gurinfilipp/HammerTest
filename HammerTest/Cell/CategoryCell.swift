@@ -33,12 +33,8 @@ final class CategoryCell: UICollectionViewCell {
         categoryLabel.pin.all()
     }
     
-    func configure(with category: String) {
-        switch category {
-        default: categoryLabel.text = "wow"
-        }
-        
-        //categoryLabel.text = category
+    func configure(with category: MealType) {
+        categoryLabel.text = category.rawValue
     }
     
     func makeTitleBold() {

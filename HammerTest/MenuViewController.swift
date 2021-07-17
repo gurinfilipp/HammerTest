@@ -106,13 +106,18 @@ class MenuViewController: UIViewController {
                     $0.mealType = MealType(rawValue: category.rawValue)
                 }
                     self.menuItems.append(contentsOf: dataToShow)
+                    if category == MealType.allCases[0] {
+                        DispatchQueue.main.async {
+                            self.tableView.reloadSections(IndexSet(integer: 1), with: .fade)
+                        }
+                    }
                     group.leave()
-                DispatchQueue.main.async {
-                    self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
-                    self.allCategoriesShown = true
-                }
             }
                 group.wait()
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+                self.allCategoriesShown = true
             }
         }
     }

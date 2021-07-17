@@ -13,15 +13,15 @@ struct JsonResults: Decodable {
 
 enum MealType: String, CaseIterable, Codable {
     case pizza = "Pizza"
-    case combo = "Pasta"
-    case desert = "Dessert"
+    case pasta = "Pasta"
+    case dessert = "Dessert"
     case drinks = "Drinks"
     
     init(rawValue: String) {
         switch rawValue {
         case "Pizza"  : self = .pizza
-        case "Pasta"  : self = .combo
-        case "Dessert": self = .desert
+        case "Pasta"  : self = .pasta
+        case "Dessert": self = .dessert
         case "Drinks": self = .drinks
         default: self = .pizza
         }

@@ -63,7 +63,7 @@ extension CategoriesView: UICollectionViewDataSource, UICollectionViewDelegate, 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionView Cell", for: indexPath) as? CategoryCell else { return .init() }
         cell.layer.cornerRadius = 15
         cell.clipsToBounds = true
-        cell.configure(with: categories[indexPath.row])
+        cell.configure(with: MealType.allCases[indexPath.row])
         if indexPath.row == currentCategory {
             cell.backgroundColor = UIColor.red.withAlphaComponent(0.3)
             cell.makeTitleBold()
