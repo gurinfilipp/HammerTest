@@ -17,7 +17,6 @@ class MenuViewController: UIViewController {
         
         return tableView
     }()
-    
     private var menuItems: [MenuItem] = []
     private var adsArray: [UIImage] = [UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!, UIImage(named: "ad1")!, UIImage(named: "ad2")!, UIImage(named: "ad3")!]
     let categories: [String] = MealType.allCases.map { $0.rawValue }
@@ -58,12 +57,11 @@ class MenuViewController: UIViewController {
     }
     
     private func restoreData() {
-        guard let url = documentsDirURL() else {
+        guard let fileURL = documentsDirURL() else {
             return
         }
-        let fileUrl = url.appendingPathComponent("menuItems").appendingPathExtension("plist")
         let propertyListDecoder = PropertyListDecoder()
-        if let retrievedMenuItemsData = try? Data(contentsOf: fileUrl),
+        if let retrievedMenuItemsData = try? Data(contentsOf: fileURL),
            let decodedMenuItems = try?
             propertyListDecoder.decode(Array<MenuItem>.self,
                                        from: retrievedMenuItemsData) {
@@ -72,24 +70,24 @@ class MenuViewController: UIViewController {
     }
     
     private func saveMenuCache() {
+        guard let fileURL = documentsDirURL() else {
+            return
+        }
         for item in self.menuItems {
             guard let newItem = item.copy() as? MenuItem else {
                 return
             }
             self.menuItemsCache.append(newItem)
         }
-        guard let url = documentsDirURL() else {
-            return
-        }
-        let fileUrl = url.appendingPathComponent("menuItems").appendingPathExtension("plist")
         let propertyListEncoder = PropertyListEncoder()
         let encodedMenuItems = try? propertyListEncoder.encode(self.menuItemsCache)
-        
-        try? encodedMenuItems?.write(to: fileUrl, options: .noFileProtection)
+        try? encodedMenuItems?.write(to: fileURL, options: .noFileProtection)
     }
     
     private func documentsDirURL() -> URL? {
-        return try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let documentsUrl = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let fileUrl = documentsUrl?.appendingPathComponent("menuItems").appendingPathExtension("plist")
+        return fileUrl
     }
     
     private func fetchAllMenuItems() {
