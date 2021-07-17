@@ -146,31 +146,43 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        var categoriesPoints: [Int] = []
-        for category in categories {
-            let array = self.allCategoriesShown ? menuItems : menuItemsCache
-            guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
-            categoriesPoints.append(firstCategoryItem)
-        }
-        let subviewsArray = tableView.subviews
-        let categoryView = subviewsArray.first {
-            $0.tag == 1001
-        }
-        guard let castedCategoryView = categoryView as? CategoriesView else { return }
-        if categoriesPoints.contains(indexPath.row - 2) {
-            let newCategoryNumber = indexPath.row - 2
-            guard let newCategoryNumberInArray = categoriesPoints.firstIndex(of: newCategoryNumber) else {return}
-            let newCategory = MealType.allCases[newCategoryNumberInArray].rawValue
-            let newCategoryEnum = MealType.allCases.first {
-                $0.rawValue == newCategory
-            }
-            let newCategoryIndex = MealType.allCases.firstIndex {
-                newCategoryEnum == $0
-            }
-            castedCategoryView.categoryChanged(with: newCategoryIndex ?? 0)
-        }
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        var visibleRows = tableView.indexPathsForVisibleRows
+        let visibleRowsFromSectionOne = visibleRows?.filter({
+            $0.section == 1
+        })
+        // Сверху получаем массив отображаемых ячеек только из 1 секции (минуя горизонтальную коллекцию)
+        print(visibleRowsFromSectionOne)
+        
+        
     }
+    
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        var categoriesPoints: [Int] = []
+//        for category in categories {
+//            let array = self.allCategoriesShown ? menuItems : menuItemsCache
+//            guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
+//            categoriesPoints.append(firstCategoryItem)
+//        }
+//        let subviewsArray = tableView.subviews
+//        let categoryView = subviewsArray.first {
+//            $0.tag == 1001
+//        }
+//        guard let castedCategoryView = categoryView as? CategoriesView else { return }
+//        if categoriesPoints.contains(indexPath.row - 2) {
+//            let newCategoryNumber = indexPath.row - 2
+//            guard let newCategoryNumberInArray = categoriesPoints.firstIndex(of: newCategoryNumber) else {return}
+//            let newCategory = MealType.allCases[newCategoryNumberInArray].rawValue
+//            let newCategoryEnum = MealType.allCases.first {
+//                $0.rawValue == newCategory
+//            }
+//            let newCategoryIndex = MealType.allCases.firstIndex {
+//                newCategoryEnum == $0
+//            }
+//            castedCategoryView.categoryChanged(with: newCategoryIndex ?? 0)
+//        }
+//    }
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
