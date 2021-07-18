@@ -98,6 +98,7 @@ class MenuViewController: UIViewController {
             for category in MealType.allCases {
                 group.enter()
                 NetworkManager.fetchMenu(for: category.rawValue, on: serialQueue) { response in
+                    print("response for category \(category) is: \(response)")
                     let dataToShow = response.results
                     dataToShow.forEach {
                         $0.mealType = MealType(rawValue: category.rawValue)
@@ -164,7 +165,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         let counts = Dictionary(mappedArrayOfMenuItems, uniquingKeysWith: +)
         var mostUsed: MealType = .pizza
         if let (value, _) = counts.max(by: {$0.1 < $1.1}) {
-            mostUsed = value
+            mostUsed = value ?? .pizza
         }
         let subviewsArray = tableView.subviews
         let categoryView = subviewsArray.first {
@@ -229,7 +230,7 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
 extension MenuViewController: FooterViewTapDelegate {
     func moveTo(category: String) {
         let array = self.allCategoriesShown ? menuItems : menuItemsCache
-        guard let firstCategoryItem = array.firstIndex(where: { $0.mealType.rawValue == category }) else { return }
+        guard let firstCategoryItem = array.firstIndex(where: { $0.mealType?.rawValue == category }) else { return }
         self.tableView.scrollToRow(at: IndexPath(row: firstCategoryItem, section: 1), at: .top, animated: true)
     }
 }

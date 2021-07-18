@@ -33,7 +33,7 @@ class MenuItem: Codable, NSCopying {
     var image: String
     //    var description: String
     //   var minimumPrice: Int
-    var mealType: MealType
+    var mealType: MealType?
     
     init(title: String, image: String, mealType: MealType) {
         self.title = title
@@ -42,7 +42,7 @@ class MenuItem: Codable, NSCopying {
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
-        let copy = MenuItem(title: title, image: image, mealType: mealType)
+        let copy = MenuItem(title: title, image: image, mealType: mealType ?? .pizza)
         return copy
     }
 }
