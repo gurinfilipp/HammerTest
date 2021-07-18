@@ -98,7 +98,6 @@ class MenuViewController: UIViewController {
             for category in MealType.allCases {
                 group.enter()
                 NetworkManager.fetchMenu(for: category.rawValue, on: serialQueue) { response in
-                    print("response for category \(category) is: \(response)")
                     let dataToShow = response.results
                     dataToShow.forEach {
                         $0.mealType = MealType(rawValue: category.rawValue)
@@ -148,14 +147,17 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let visibleRows = tableView.indexPathsForVisibleRows
-        guard let visibleRowsFromSectionOne = visibleRows?.filter({
-            $0.section == 1
-        }) else { return }
-        var arrayOfIndices: [Int] = []
-        for row in visibleRowsFromSectionOne {
-            arrayOfIndices.append(row.row)
+        let subviewsArray = tableView.subviews
+        let categoryView = subviewsArray.first {
+            $0.tag == 1001
         }
+        guard let castedCategoryView = categoryView as? CategoriesView else { return }
+        
+        guard let arrayOfIndices: [Int] = tableView.indexPathsForVisibleRows?.filter({
+            $0.section == 1
+        }).map({
+            $0.row
+        }) else { return }
         var arrayOfMenuItems: [MenuItem] = []
         for menuItemNumber in arrayOfIndices {
             let dataArray = self.allCategoriesShown ? menuItems : menuItemsCache
@@ -164,14 +166,10 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
         let mappedArrayOfMenuItems = arrayOfMenuItems.map { ($0.mealType, 1) }
         let counts = Dictionary(mappedArrayOfMenuItems, uniquingKeysWith: +)
         var mostUsed: MealType = .pizza
-        if let (value, _) = counts.max(by: {$0.1 < $1.1}) {
-            mostUsed = value ?? .pizza
+        if let (category, _) = counts.max(by: {$0.1 < $1.1}) {
+            mostUsed = category ?? .pizza
         }
-        let subviewsArray = tableView.subviews
-        let categoryView = subviewsArray.first {
-            $0.tag == 1001
-        }
-        guard let castedCategoryView = categoryView as? CategoriesView else { return }
+        
         castedCategoryView.categoryChanged(with: MealType.allCases.firstIndex(where: {
             $0 == mostUsed
         })!)
